@@ -14,8 +14,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -23,7 +21,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MyController">
+<VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo2.HelloController">
     <children>
         <!-- MenuBar -->
         <MenuBar VBox.vgrow="NEVER">
@@ -32,14 +30,10 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="New" />
                         <MenuItem mnemonicParsing="false" text="Open…" />
-                        <Menu mnemonicParsing="false" text="Open Recent" />
-                        <Separator />
+
                         <MenuItem mnemonicParsing="false" text="Close" />
                         <MenuItem mnemonicParsing="false" text="Save" />
-                        <MenuItem mnemonicParsing="false" text="Save As…" />
-                        <Separator />
-                        <MenuItem mnemonicParsing="false" text="Preferences…" />
-                        <Separator />
+
                         <MenuItem mnemonicParsing="false" text="Quit" />
                     </items>
                 </Menu>
@@ -47,13 +41,10 @@
                     <items>
                         <MenuItem mnemonicParsing="false" text="Undo" />
                         <MenuItem mnemonicParsing="false" text="Redo" />
-                        <Separator />
+
                         <MenuItem mnemonicParsing="false" text="Cut" />
                         <MenuItem mnemonicParsing="false" text="Copy" />
                         <MenuItem mnemonicParsing="false" text="Paste" />
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                        <Separator />
-                        <MenuItem mnemonicParsing="false" text="Select All" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">
@@ -64,7 +55,7 @@
             </menus>
         </MenuBar>
 
-        <!-- Główna część aplikacji z podziałem na dwie sekcje -->
+        <!-- Główna część aplikacji -->
         <SplitPane dividerPositions="0.3" VBox.vgrow="ALWAYS">
             <items>
                 <!-- Lewa część: Formularz i wykres -->
@@ -73,25 +64,19 @@
                         <VBox spacing="10" padding="10" prefHeight="600.0" prefWidth="270.0">
                             <children>
                                 <!-- Sekcja Formularza -->
-                                <ImageView fitHeight="100.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../../Pictures/Screenshots/Zrzut%20ekranu%202024-12-15%20224336.png" />
-                                    </image>
-                                </ImageView>
+                                <TextField fx:id="fieldName" promptText="Podaj Nazwę" />
                                 <Separator />
-                                <TextField promptText="Podaj Nazwę" />
+                                <TextField fx:id="fieldAmount" promptText="Podaj Kwotę" />
                                 <Separator />
-                                <TextField promptText="Podaj Kwotę" />
+                                <DatePicker fx:id="fieldDate" promptText="Wybierz Datę" />
                                 <Separator />
-                                <DatePicker promptText="Wybierz Datę" />
+                                <ChoiceBox fx:id="choiceCategory"  />
                                 <Separator />
-                                <ChoiceBox promptText="Wybierz Kategorię" />
-                                <Separator />
-                                <ChoiceBox promptText="Typ Transakcji" />
+                                <ChoiceBox fx:id="choiceType"  />
                                 <Separator />
 
                                 <!-- Sekcja Wykresu -->
-                                <PieChart title="Wydatki" prefHeight="200.0" prefWidth="270.0" />
+                                <PieChart fx:id="pieChart" title="Wydatki" prefHeight="200.0" prefWidth="270.0" />
                             </children>
                         </VBox>
                     </children>
