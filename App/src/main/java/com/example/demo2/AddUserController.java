@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class AddUserController {
 
     public TextField ImieTextfield;
@@ -23,11 +25,12 @@ public class AddUserController {
     }
 
 
-    public void onZatwierdzButton(ActionEvent actionEvent) {
+    public void onZatwierdzButton(ActionEvent actionEvent) throws IOException {
 
-        String name;
-        String surname;
-        double balance;
+//        int id =666;
+        String name = "";
+        String surname ="";
+        double balance = 0;
 
         try{
             name = ImieTextfield.getText();
@@ -42,6 +45,8 @@ public class AddUserController {
         catch(ClassCastException e){
             System.out.println("Niepoprawny format danych. Spróbuj ponownie.");
         }
+
+        MainController.addUser(name, surname, balance);
 
         Stage stage = (Stage) ZatwierdzButton.getScene().getWindow();
         stage.close();

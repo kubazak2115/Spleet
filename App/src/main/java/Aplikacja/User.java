@@ -1,10 +1,15 @@
 package Aplikacja;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class User {
     private int id;
     private String name;
     private String surname;
     private double balance;
+    private ObservableList<Group> groups = FXCollections.observableArrayList();
+
 
     public User(int id, String name, String surname, double balance) {
         this.id = id;
@@ -25,5 +30,15 @@ public class User {
     public double getBalance() {
         return balance;
     }
-
+    public ObservableList<Group> getGroups() {
+        return groups;
+    }
+    public void addGroup(Group group) {
+        if (!groups.contains(group)) {
+            groups.add(group);
+        }
+    }
+    public void removeGroup(Group group) {
+        groups.remove(group);
+    }
 }

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="840.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo2.MainController">
+<AnchorPane prefHeight="840.0" prefWidth="1020.0" style="-fx-background-color: #818589 ;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo2.MainController">
    <children>
       <TabPane prefHeight="840.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -11,14 +11,35 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="AddUser" layoutX="868.0" layoutY="750.0" mnemonicParsing="false" onAction="#onAddUser" text="Dodaj użytkownika" />
-                        <Button fx:id="UtworzGrupe" layoutX="901.0" layoutY="696.0" mnemonicParsing="false" onAction="#onUtworzGrupe" text="Utworz Grupę" />
+                        <VBox layoutY="552.0" prefHeight="259.0" prefWidth="1020.0">
+                           <children>
+                              <Pane prefHeight="274.0" prefWidth="1020.0">
+                                 <children>
+                                    <Button fx:id="AddUser" layoutX="12.0" layoutY="25.0" mnemonicParsing="false" onAction="#onAddUser" text="Dodaj użytkownika" />
+                                    <Button fx:id="UtworzGrupe" layoutX="26.0" layoutY="73.0" mnemonicParsing="false" onAction="#onUtworzGrupe" text="Utworz Grupę" />
+                                    <ComboBox fx:id="WybierzUzytkownika" layoutX="610.0" layoutY="25.0" prefWidth="150.0" />
+                                    <Label layoutX="406.0" layoutY="29.0" text="Wybierz jakim uzytkownikiem jestes" />
+                                    <TextField fx:id="TwojeImie" layoutX="611.0" layoutY="73.0" />
+                                    <TextField fx:id="TwojeNazwisko" layoutX="611.0" layoutY="117.0" />
+                                    <TextField fx:id="TwojeSaldo" layoutX="611.0" layoutY="162.0" />
+                                    <Label layoutX="496.0" layoutY="77.0" text="Twoje imie" />
+                                    <Label layoutX="496.0" layoutY="121.0" text="Twoje nazwisko" />
+                                    <Label layoutX="496.0" layoutY="166.0" text="Twoje saldo" />
+                                    <Button fx:id="UsunUzytkownika" layoutX="800.0" layoutY="25.0" mnemonicParsing="false" onAction="#onUsunUzytkownika" text="Usun siebie" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </VBox>
+                        <ListView fx:id="ListaGrup" layoutX="214.0" layoutY="98.0" prefHeight="351.0" prefWidth="314.0" />
                      </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Uczestnicy">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="ListaUzytkownikow" layoutX="211.0" layoutY="154.0" prefHeight="365.0" prefWidth="416.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab text="Wydatki">

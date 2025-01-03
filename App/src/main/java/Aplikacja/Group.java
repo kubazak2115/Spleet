@@ -1,26 +1,41 @@
 package Aplikacja;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Group {
     private String name;
-    private List<User> users;
+    private ObservableList<User> Members = FXCollections.observableArrayList();
 
     public Group(String name) {
         this.name = name;
-        users = new ArrayList<User>();
+
     }
 
-    public void addUser(User user) {
-        users.add(user);
+    public void addMember(User user) {
+        if (!Members.contains(user)) {
+            Members.add(user);
+            user.addGroup(this);
+        }
     }
 
-    public void removeUser(User user) {
-        users.remove(user);
+    public void removeMember(User user) {
+        if (Members.contains(user)) {
+            Members.remove(user);
+            user.removeGroup(this);
+        }
     }
+
 
     public String getName() {
         return name;
+    }
+
+    public Collection<User> getMembers() {
+        return Members;
     }
 }
