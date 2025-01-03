@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="840.0" prefWidth="1020.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo2.MainController">
+   <children>
+      <TabPane prefHeight="840.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Grupy">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="AddUser" layoutX="868.0" layoutY="750.0" mnemonicParsing="false" onAction="#onAddUser" text="Dodaj użytkownika" />
+                        <Button fx:id="UtworzGrupe" layoutX="901.0" layoutY="696.0" mnemonicParsing="false" onAction="#onUtworzGrupe" text="Utworz Grupę" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Uczestnicy">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+          <Tab text="Wydatki">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

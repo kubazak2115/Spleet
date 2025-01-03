@@ -1,5 +1,6 @@
 package com.example.demo2;
 
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -10,9 +11,9 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/GUI.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 900, 600);
-        stage.setTitle("Demo Aplikacji");
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("nowe.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1020, 840);
+        stage.setTitle("Spleet!");
         stage.setScene(scene);
         stage.show();
     }
@@ -21,3 +22,4 @@ public class HelloApplication extends Application {
         launch();
     }
 }
+
