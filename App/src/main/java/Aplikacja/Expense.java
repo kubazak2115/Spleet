@@ -1,26 +1,40 @@
 package Aplikacja;
 
+import java.time.LocalDate;
+
 public class Expense {
-    private int userid;
-    private String datum;
+    private int id;
+    private LocalDate datum;
     private double price;
     private String description;
+    private User author;
+    private Group expenseGroup;
 
-    public Expense(int userid, String datum, double price, String description) {
-        this.userid = userid;
+    public Expense(int id, User author, LocalDate datum, double price, String description) {
+        this.id = id;
+        this.author = author;
         this.datum = datum;
         this.price = price;
         this.description = description;
+        this.expenseGroup = null; // Nie przypisujemy grupy, bo to jest wydatek użytkownika
+    }
 
+    public Expense(int id, Group group, LocalDate datum, double price, String description) {
+        this.id = id;
+        this.expenseGroup = group;
+        this.datum = datum;
+        this.price = price;
+        this.description = description;
+        this.author = null; // Nie przypisujemy użytkownika, bo to jest wydatek grupy
     }
 
     public int getId() {
-        return userid;
+        return id;
     }
     public String getDescription() {
         return description;
     }
-    public String getDatum() {
+    public LocalDate getDatum() {
         return datum;
     }
     public double getPrice() {

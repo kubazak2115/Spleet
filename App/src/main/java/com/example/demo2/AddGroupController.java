@@ -2,8 +2,10 @@ package com.example.demo2;
 
 import Aplikacja.Group;
 import Aplikacja.User;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -12,11 +14,12 @@ import java.io.IOException;
 
 public class AddGroupController {
 
-
+    @FXML
     public Button ZatwierdzButtonG;
     public Button OdrzucButtonG;
     public ComboBox WybierzCzlonkowComboBox;
     public TextField nazwaTextfield;
+    @FXML
     public ListView ListaCzlonkow;
     private MainController MainController;
 
@@ -26,9 +29,10 @@ public class AddGroupController {
         System.out.println(newMainController);
 
     }
-
+    @FXML
     public void initialize() {
-        ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        System.out.println("multiple zaincicjowane");
 
         ListaCzlonkow.setCellFactory(param -> new ListCell<User>() {
             @Override
@@ -47,7 +51,7 @@ public class AddGroupController {
 
     }
 
-
+    @FXML
     public void onZatwierdzButtonG(ActionEvent actionEvent) throws IOException {
 
         String name = nazwaTextfield.getText();
@@ -62,14 +66,16 @@ public class AddGroupController {
 
             // Dodanie grupy do kontrolera głównego
 
-            User selectedUser= (User) ListaCzlonkow.getSelectionModel().getSelectedItem();
 
-            MainController.addGroup(name, selectedUser);
+            User selectedUser= (User) ListaCzlonkow.getSelectionModel().getSelectedItem();
+            if(selectedUser != null) {
+                MainController.addGroup(name, selectedUser);
+            }
 
             // Zamknięcie okna
             Stage stage = (Stage) ZatwierdzButtonG.getScene().getWindow();
             stage.close();
-            System.out.println("Wybrani użytkownicy: " + selectedUser);
+//            System.out.println("Wybrani użytkownicy: " + selectedUsers);
 
         } catch (Exception e) {
             System.out.println("Wystąpił błąd: " + e.getMessage());
@@ -77,6 +83,7 @@ public class AddGroupController {
 
     }
 
+    @FXML
     public void onOdrzucButtonG(ActionEvent actionEvent) {
 
         Stage stage = (Stage) OdrzucButtonG.getScene().getWindow();
@@ -84,15 +91,17 @@ public class AddGroupController {
 
     }
 
+    @FXML
     public void onWybierzCzlonkowComboBox(ActionEvent actionEvent) {
     }
 
+    @FXML
     private void updateListView() {
 
         if (MainController != null) {
             ListaCzlonkow.getItems().clear();
 //            System.out.println("dziala");
-            ListaCzlonkow.getItems().addAll(MainController.getUsers()); // Dodanie użytkowników
+            ListaCzlonkow.getItems().addAll(MainController.getZnajomi()); // Dodanie użytkowników
         }
     }
 }
