@@ -39,12 +39,21 @@
                                        </Pane>
                                    </children>
                                </VBox>
-                              <ListView fx:id="ListaWydatkowGupy" layoutX="218.0" layoutY="206.0" prefHeight="200.0" prefWidth="200.0" />
-                              <Label layoutX="61.0" layoutY="206.0" text="Wydatki twojej grupy" />
-                              <Label layoutX="98.0" layoutY="128.0" text="WybierzGrupe" />
-                              <ListView fx:id="ListaTwoichWydatkow" layoutX="657.0" layoutY="206.0" prefHeight="200.0" prefWidth="200.0" />
-                              <Label layoutX="645.0" layoutY="160.0" prefHeight="40.0" prefWidth="224.0" text="Wszystkie wydatki, wktorych uczestniczysz" />
-                              <ComboBox fx:id="WybierzGrupeComboBox" layoutX="243.0" layoutY="124.0" prefWidth="150.0" />
+                              <ListView fx:id="ListaWydatkowGupy" layoutX="5.0" layoutY="160.0" prefHeight="200.0" prefWidth="477.0" />
+                              <Label layoutX="216.0" layoutY="131.0" text="Wydatki twojej grupy" />
+                              <Label layoutX="133.0" layoutY="91.0" text="Wybrana Grupa" />
+                              <ListView fx:id="ListaTwoichWydatkow" layoutX="494.0" layoutY="160.0" prefHeight="201.0" prefWidth="509.0" />
+                              <Label layoutX="645.0" layoutY="99.0" prefHeight="40.0" prefWidth="224.0" text="Wszystkie wydatki, wktorych uczestniczysz" />
+                              <ComboBox fx:id="WybierzGrupeComboBox" layoutX="243.0" layoutY="43.0" prefWidth="150.0" />
+                              <TextField fx:id="GroupBalanceTextField" layoutX="218.0" layoutY="419.0" />
+                              <TextField fx:id="WybranaGrupatextfield" layoutX="244.0" layoutY="87.0" />
+                              <Label layoutX="66.0" layoutY="423.0" text="Twój Balans W tej grupie:" />
+                              <Label layoutX="536.0" layoutY="385.0" text="Łączne wydatki twoje" />
+                              <TextField fx:id="YourAllMoney" layoutX="657.0" layoutY="381.0" />
+                              <TextField fx:id="GroupAllMoney" layoutX="218.0" layoutY="381.0" />
+                              <Label layoutX="60.0" layoutY="385.0" text="Łączne wydatki w tej grupie" />
+                              <Label layoutX="536.0" layoutY="423.0" text="Twój bilans ogólnie" />
+                              <TextField fx:id="YourBanalceTextField" layoutX="657.0" layoutY="419.0" />
                            </children>
                         </AnchorPane>
                   </content>

@@ -20,11 +20,7 @@ public class AddExpenseController {
     public Button OdzrucWydatek;
 
     private MainController mainController;
-    ObservableList<String> wydatkiOpcje = FXCollections.observableArrayList(
-            "Po równo",
-            "Ty wisisz całe siano drugiemu",
-            "Drugi wisi całe siano"
-    );
+
 
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -32,8 +28,9 @@ public class AddExpenseController {
     }
 
     public void initialize(User WybranyUzytkownik, ObservableList<Group> grupyuzytkownika) {
-
-        PodziaWydatku.setItems(wydatkiOpcje);
+        ObservableList<String> wydatkiOpcje = FXCollections.observableArrayList(
+                "Po równo"
+        );
 
         GrupaWydatku.setItems(grupyuzytkownika);
 
@@ -62,6 +59,18 @@ public class AddExpenseController {
             }
         });
 
+//        // Listener do aktualizacji PodziaWydatku po zmianie wybranej grupy
+//        GrupaWydatku.valueProperty().addListener((observable, oldValue, selectedGroup) -> {
+//            if (selectedGroup != null) {
+//                Group newselectedgroup = (Group) selectedGroup;
+//                ObservableList<User> members = FXCollections.observableArrayList(newselectedgroup.getMembers());
+//                PodziaWydatku.setItems(members);
+//            } else {
+//                PodziaWydatku.setItems(FXCollections.observableArrayList());
+//            }
+//        });
+        PodziaWydatku.setItems(wydatkiOpcje);
+
     }
 
 
@@ -84,7 +93,6 @@ public class AddExpenseController {
 
         Group wybranagrupa = (Group) GrupaWydatku.getValue();
         System.out.println(wybranagrupa);
-        String OpcjaPodzialu = (String) PodziaWydatku.getValue();
         mainController.addExpenseForGroup(datum, wybranagrupa, price, description);
         mainController.addExpenseForUser(datum, wybranagrupa, price, description);
 
