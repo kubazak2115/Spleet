@@ -8,8 +8,11 @@ public class User {
     private String name;
     private String surname;
     private double balance;
+    private double spendings =0;
+    private double allspendings =0;
     private ObservableList<Group> groups = FXCollections.observableArrayList();
     private ObservableList<Expense> expenses = FXCollections.observableArrayList();
+    private ObservableList<Balance> balances = FXCollections.observableArrayList();
 
 
     public User(int id, String name, String surname, double balance) {
@@ -22,6 +25,20 @@ public class User {
 
     public void addExpense(Expense expense) {
         expenses.add(expense);
+
+    }
+
+    public void addSpending(double money){
+        this.spendings-=money;
+    }
+    public double getSpending(){
+        return spendings;
+    }
+    public void addAllSpending(double money){
+        this.allspendings-=money;
+    }
+    public double getAllSpending(){
+        return allspendings;
     }
 
     public ObservableList<Expense> getExpenses() {
@@ -43,6 +60,9 @@ public class User {
     public double getBalance() {
         return balance;
     }
+    public void setBalance(double update) {
+        this.balance+=update;
+    }
 
     public ObservableList<Group> getGroups() {
         return groups;
@@ -57,4 +77,23 @@ public class User {
     public void removeGroup(Group group) {
         groups.remove(group);
     }
+
+    public ObservableList<Balance> getBalances() {
+        return balances;
+    }
+
+    public Balance getBalanceForGroup(Group group) {
+        return balances.stream()
+                .filter(balance -> group.equals(balance.getGroup()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Balance getOverallBalance() {
+        return balances.stream()
+                .filter(balance -> balance.getGroup() == null)
+                .findFirst()
+                .orElse(null);
+    }
+
 }

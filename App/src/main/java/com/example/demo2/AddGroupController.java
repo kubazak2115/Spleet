@@ -2,6 +2,7 @@ package com.example.demo2;
 
 import Aplikacja.Group;
 import Aplikacja.User;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,8 +32,8 @@ public class AddGroupController {
     }
     @FXML
     public void initialize() {
+        updateListView();
         ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        System.out.println("multiple zaincicjowane");
 
         ListaCzlonkow.setCellFactory(param -> new ListCell<User>() {
             @Override
@@ -46,8 +47,7 @@ public class AddGroupController {
             }
         });
 
-        updateListView();
-        System.out.println(MainController);
+//        System.out.println(MainController);
 
     }
 
@@ -66,10 +66,17 @@ public class AddGroupController {
 
             // Dodanie grupy do kontrolera głównego
 
+            ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            System.out.println("multiple zaincicjowane");
+            ObservableList<User> selectedUsers = FXCollections.observableArrayList();
+            selectedUsers.addAll(ListaCzlonkow.getSelectionModel().getSelectedItems());
+            System.out.println(selectedUsers + "powinno byc 3");
 
-            User selectedUser= (User) ListaCzlonkow.getSelectionModel().getSelectedItem();
-            if(selectedUser != null) {
-                MainController.addGroup(name, selectedUser);
+
+//            User selectedUser= (User) ListaCzlonkow.getSelectionModel().getSelectedItem();
+            if(selectedUsers != null) {
+                MainController.addGroup(name, selectedUsers);
+//                System.out.println(selectedUser);
             }
 
             // Zamknięcie okna
