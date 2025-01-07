@@ -63,7 +63,7 @@ public class MainController {
       addUser("rober", "lewy", 32);
       LocalDate LocalDate = null;
       addExpenseForGroup(LocalDate, Groups.get(0),34, "kot");
-      addExpenseForUser(LocalDate, Groups.get(0),34, "kot");
+      addExpenseForUser(LocalDate, Groups.get(0),34, "kot", "obiat");
 
 
       refresh();
@@ -347,8 +347,8 @@ public class MainController {
 
    }
 
-   public void addExpenseForUser(LocalDate datum, Group group, double price, String description){
-      Expense newexpenseforuser = new Expense(WybranyUzytkownik.getId(), group, datum, price, description ,WybranyUzytkownik);
+   public void addExpenseForUser(LocalDate datum, Group group, double price, String description, String category){
+      Expense newexpenseforuser = new Expense(WybranyUzytkownik.getId(), group, datum, price, description,WybranyUzytkownik);
       for(User user : group.getMembers()) {
          user.addExpense(newexpenseforuser);
          user.addSpending(newexpenseforuser.getPrice()/(double)group.getSize());

@@ -9,25 +9,41 @@ public class Expense {
     private String description;
     private User author;
     private Group expenseGroup;
+    private String category; // Kategoria wydatku
 
-    public Expense(int id, User author, LocalDate datum, double price, String description) {
+    // Konstruktor dla wydatku użytkownika z kategorią
+    public Expense(int id, User author, LocalDate datum, double price, String description, String category) {
         this.id = id;
         this.author = author;
         this.datum = datum;
         this.price = price;
         this.description = description;
+        this.category = category;
         this.expenseGroup = null; // Nie przypisujemy grupy, bo to jest wydatek użytkownika
     }
 
-    public Expense(int id, Group group, LocalDate datum, double price, String description, User Author) {
+    // Konstruktor dla wydatku użytkownika bez kategorii
+    public Expense(int id, User author, LocalDate datum, double price, String description) {
+        this(id, author, datum, price, description, null); // Wywołanie głównego konstruktora z kategorią ustawioną na null
+    }
+
+    // Konstruktor dla wydatku grupy z kategorią
+    public Expense(int id, Group group, LocalDate datum, double price, String description, User author, String category) {
         this.id = id;
         this.expenseGroup = group;
         this.datum = datum;
         this.price = price;
         this.description = description;
-        this.author = Author; // Nie przypisujemy użytkownika, bo to jest wydatek grupy
+        this.author = author;
+        this.category = category;
     }
 
+    // Konstruktor dla wydatku grupy bez kategorii
+    public Expense(int id, Group group, LocalDate datum, double price, String description, User author) {
+        this(id, group, datum, price, description, author, null); // Wywołanie głównego konstruktora z kategorią ustawioną na null
+    }
+
+    // Gettery i settery
     public int getId() {
         return id;
     }
@@ -52,4 +68,11 @@ public class Expense {
         return author;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
