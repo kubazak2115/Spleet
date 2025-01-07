@@ -20,10 +20,12 @@
             <Label layoutX="85.0" layoutY="158.0" prefHeight="25.0" prefWidth="194.0" style="-fx-font-size: 16px;" text="Wybierz date tego wydatku" />
             <TextField fx:id="WartoscWydatku" layoutX="290.0" layoutY="105.0" />
             <Label layoutX="158.0" layoutY="105.0" prefHeight="25.0" prefWidth="122.0" style="-fx-font-size: 16px;" text="Wartość wydaktu" />
-            <ComboBox fx:id="PodziaWydatku" layoutX="289.0" layoutY="259.0" prefWidth="150.0" />
-            <Label layoutX="96.0" layoutY="259.0" prefHeight="25.0" prefWidth="184.0" style="-fx-font-size: 16px;" text="Sposób dzielenia wydatku" />
+            <ComboBox fx:id="PodziaWydatku" layoutX="289.0" layoutY="247.0" prefWidth="150.0" />
+            <Label layoutX="90.0" layoutY="247.0" prefHeight="25.0" prefWidth="184.0" style="-fx-font-size: 16px;" text="Sposób dzielenia wydatku" />
             <Button fx:id="DodajWydatek" layoutX="158.0" layoutY="329.0" mnemonicParsing="false" onAction="#onDodajWydatek" prefHeight="36.0" prefWidth="96.0" style="-fx-font-size: 16px;" text="Dodaj" />
             <Button fx:id="OdzrucWydatek" layoutX="290.0" layoutY="329.0" mnemonicParsing="false" onAction="#onOdrzucWydatek" prefHeight="36.0" prefWidth="96.0" style="-fx-font-size: 16px;" text="Odrzuc" />
+            <TextField fx:id="KategoriaWydatku" layoutX="290.0" layoutY="287.0" />
+            <Label layoutX="90.0" layoutY="287.0" prefHeight="25.0" prefWidth="184.0" style="-fx-font-size: 16px;" text="Kategoria (opcjonalnie)" />
          </children>
       </Pane>
    </children>

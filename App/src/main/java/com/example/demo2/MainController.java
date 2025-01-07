@@ -37,6 +37,7 @@ public class MainController {
    public TextField WybranaGrupatextfield;
    public TextField YourAllMoney;
    public TextField GroupAllMoney;
+   public TextField KategoriaWydatku;
 
    private ObservableList<Group> Groups = FXCollections.observableArrayList();
    private ObservableList<User> Users = FXCollections.observableArrayList();

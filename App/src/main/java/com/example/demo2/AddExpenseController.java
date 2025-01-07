@@ -79,6 +79,7 @@ public class AddExpenseController {
         LocalDate datum = LocalDate.now();
         double price = 666;
         String description = "666";
+        String category = "jedzenie";
 
         try{
             datum = DataWydatku.getValue();
@@ -94,7 +95,7 @@ public class AddExpenseController {
         Group wybranagrupa = (Group) GrupaWydatku.getValue();
         System.out.println(wybranagrupa);
         mainController.addExpenseForGroup(datum, wybranagrupa, price, description);
-        mainController.addExpenseForUser(datum, wybranagrupa, price, description);
+        mainController.addExpenseForUser(datum, wybranagrupa, price, description, category);
 
         Stage stage = (Stage) DodajWydatek.getScene().getWindow();
         stage.close();
