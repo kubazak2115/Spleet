@@ -4,7 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class User {
-    private int id;
+//    private int id;
     private String name;
     private String surname;
     private double balance;
@@ -12,11 +12,11 @@ public class User {
     private double allspendings =0;
     private ObservableList<Group> groups = FXCollections.observableArrayList();
     private ObservableList<Expense> expenses = FXCollections.observableArrayList();
-    private ObservableList<Balance> balances = FXCollections.observableArrayList();
+//    private ObservableList<Balance> balances = FXCollections.observableArrayList();
 
 
-    public User(int id, String name, String surname, double balance) {
-        this.id = id;
+    public User(/*int id,*/ String name, String surname, double balance) {
+//        this.id = id;
         this.name = name;
         this.surname = surname;
         this.balance = balance;
@@ -45,9 +45,9 @@ public class User {
         return expenses;
     }
 
-    public int getId() {
-        return id;
-    }
+//    public int getId() {
+//        return id;
+//    }
 
     public String getName() {
         return name;
@@ -78,22 +78,28 @@ public class User {
         groups.remove(group);
     }
 
-    public ObservableList<Balance> getBalances() {
-        return balances;
+//    public ObservableList<Balance> getBalances() {
+//        return balances;
+//    }
+//
+//    public Balance getBalanceForGroup(Group group) {
+//        return balances.stream()
+//                .filter(balance -> group.equals(balance.getGroup()))
+//                .findFirst()
+//                .orElse(null);
+//    }
+//
+//    public Balance getOverallBalance() {
+//        return balances.stream()
+//                .filter(balance -> balance.getGroup() == null)
+//                .findFirst()
+//                .orElse(null);
+//    }
+
+    public String toString(){
+
+        return getName() + " " + getSurname();
     }
 
-    public Balance getBalanceForGroup(Group group) {
-        return balances.stream()
-                .filter(balance -> group.equals(balance.getGroup()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    public Balance getOverallBalance() {
-        return balances.stream()
-                .filter(balance -> balance.getGroup() == null)
-                .findFirst()
-                .orElse(null);
-    }
 
 }

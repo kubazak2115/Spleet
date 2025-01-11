@@ -7,15 +7,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.http.WebSocket;
 import java.time.LocalDate;
 import java.util.Stack;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class MainController {
 
@@ -39,17 +41,41 @@ public class MainController {
    public TextField GroupAllMoney;
    public TextField KategoriaWydatku;
 
+   @FXML
+   public TableView<Expense> tabelaGrupy;
+
+
+   @FXML
+   private TableColumn<Expense, String> kolumnaNazwa;
+   @FXML
+   private TableColumn<Expense, Double> kolumnaWartosc;
+   @FXML
+   private TableColumn<Expense, String> kolumnaGrupa;
+   @FXML
+   private TableColumn<Expense, String> kolumnaAutor;
+   @FXML
+   private TableColumn<Expense, LocalDate> kolumnaData;
+
    private ObservableList<Group> Groups = FXCollections.observableArrayList();
    private ObservableList<User> Users = FXCollections.observableArrayList();
-   private FilteredList<User> znajomi;
-   private FilteredList<Group> grupyUzytkownika;
+   private ObservableList<User> znajomi = FXCollections.observableArrayList();
+//   private FilteredList<User> znajomi;
+   private ObservableList<Group> grupyUzytkownika = FXCollections.observableArrayList();
+//   private FilteredList<Group> grupyUzytkownika;
    private User WybranyUzytkownik;
-   private Stack<Integer> wolneId = new Stack<>();
-   private int nextId = 0;
+//   private Stack<Integer> wolneId = new Stack<>();
+//   private int nextId = 0;
    private Group WybranaGrupa;
 
 
    public void initialize() throws IOException {
+
+
+      kolumnaNazwa.setCellValueFactory(new PropertyValueFactory<>("description"));
+      kolumnaWartosc.setCellValueFactory(new PropertyValueFactory<>("price"));
+      kolumnaGrupa.setCellValueFactory(new PropertyValueFactory<>("expenseGroup"));
+      kolumnaAutor.setCellValueFactory(new PropertyValueFactory<>("author"));
+      kolumnaData.setCellValueFactory(new PropertyValueFactory<>("datum"));
 
       addUser("tom", "ford", 23423);
       addUser("jan", "pawel", 343);
@@ -62,9 +88,11 @@ public class MainController {
       addGroup("psy", dogrupy2);
 
       addUser("rober", "lewy", 32);
-      LocalDate LocalDate = null;
-      addExpenseForGroup(LocalDate, Groups.get(0),34, "kot");
-      addExpenseForUser(LocalDate, Groups.get(0),34, "kot", "obiat");
+      LocalDate datka = LocalDate.now();
+      addExpenseForGroup(datka, Groups.get(0),34, "kot");
+      addExpenseForUser(datka, Groups.get(0),34, "kot", "obiat");
+
+
 
 
       refresh();
@@ -76,18 +104,18 @@ public class MainController {
 
 
       // Ustawiamy CellFactory, aby wyświetlać dane w formacie: Imię, Nazwisko, Saldo
-      ListaUzytkownikow.setCellFactory(param -> new ListCell<User>() {
-         @Override
-         protected void updateItem(User user, boolean empty) {
-            super.updateItem(user, empty);
-            if (empty || user == null) {
-               setText(null); // Gdy nie ma elementu, wyczyść tekst
-            } else {
-               // Ustawiamy tekst z podstawowymi danymi użytkownika
-               setText(user.getName() + " " + user.getSurname() + " - Saldo: " + user.getBalance());
-            }
-         }
-      });
+//      ListaUzytkownikow.setCellFactory(param -> new ListCell<User>() {
+//         @Override
+//         protected void updateItem(User user, boolean empty) {
+//            super.updateItem(user, empty);
+//            if (empty || user == null) {
+//               setText(null); // Gdy nie ma elementu, wyczyść tekst
+//            } else {
+//               // Ustawiamy tekst z podstawowymi danymi użytkownika
+//               setText(user.getName() + " " + user.getSurname() + " - Saldo: " + user.getBalance());
+//            }
+//         }
+//      });
 
 //-------------------------------------------1ekranpokazywanielizstyznajomych ^^^^^^^^^^^^^^^^-----------------------------------------
 
@@ -95,29 +123,29 @@ public class MainController {
 //-------------------------------------------1ekranwybieranieuzytkownika vvvvvvvvvvvvvv-----------------------------------------
 
       WybierzUzytkownika.setItems(Users); // Powiązanie ComboBox z listą użytkowników
-      WybierzUzytkownika.setCellFactory(param -> new ListCell<User>() {
-         @Override
-         protected void updateItem(User user, boolean empty) {
-            super.updateItem(user, empty);
-            if (empty || user == null) {
-               setText(null);
-            } else {
-               setText(user.getName() + " " + user.getSurname());
-            }
-         }
-      });
-
-      WybierzUzytkownika.setButtonCell(new ListCell<User>() {
-         @Override
-         protected void updateItem(User user, boolean empty) {
-            super.updateItem(user, empty);
-            if (empty || user == null) {
-               setText(null);
-            } else {
-               setText(user.getName() + " " + user.getSurname());
-            }
-         }
-      });
+//      WybierzUzytkownika.setCellFactory(param -> new ListCell<User>() {
+//         @Override
+//         protected void updateItem(User user, boolean empty) {
+//            super.updateItem(user, empty);
+//            if (empty || user == null) {
+//               setText(null);
+//            } else {
+//               setText(user.getName() + " " + user.getSurname());
+//            }
+//         }
+//      });
+//
+//      WybierzUzytkownika.setButtonCell(new ListCell<User>() {
+//         @Override
+//         protected void updateItem(User user, boolean empty) {
+//            super.updateItem(user, empty);
+//            if (empty || user == null) {
+//               setText(null);
+//            } else {
+//               setText(user.getName() + " " + user.getSurname());
+//            }
+//         }
+//      });
 
 
       // Obsługa zmiany wybranego użytkownika
@@ -126,62 +154,73 @@ public class MainController {
          if (newUser != null) {
             aktualizujListeZnajomych((User) newUser);
             aktualizujListeGrup((User) newUser);
+            WybierzGrupeComboBox.setItems(grupyUzytkownika);
+            aktualizujWydatkiGrupy(WybranaGrupa);
+            //System.out.println(WybranaGrupa.getName() + " restwybranagrupalsitenr");
+            if (!WybranyUzytkownik.getGroups().contains(WybranaGrupa)) {
+               WybranaGrupa = null;
+            }
+//            WybranaGrupa = null;
+//            aktualizujWydatkiGrupy(wybranagrupa);
 
 //            WybierzGrupeComboBox.getSelectionModel().clearSelection(); // Ustawienie na brak wybranej wartości
 //            WybranaGrupa=null;
 
-            aktualizujWydatkiGrupy(null);
+//            aktualizujWydatkiGrupy(null);
          }
-
          refresh();
+
       });
 //-------------------------------------------1ekranwybieranieuzytkownika ^^^^^^^^^^^^^^^^^^-----------------------------------------
 
 
 //-------------------------------------------1ekranpokazywaniegrup vvvvvvvvvvvvvv-----------------------------------------
-      ListaGrup.setCellFactory(param -> new ListCell<Group>() {
-         @Override
-         protected void updateItem(Group group, boolean empty) {
-            super.updateItem(group, empty);
-            if (empty || group == null) {
-               setText(null);
-            } else {
-               setText(group.getName());
-            }
-         }
-      });
+//      ListaGrup.setCellFactory(param -> new ListCell<Group>() {
+//         @Override
+//         protected void updateItem(Group group, boolean empty) {
+//            super.updateItem(group, empty);
+//            if (empty || group == null) {
+//               setText(null);
+//            } else {
+//               setText(group.getName());
+//            }
+//         }
+//      });
 //-------------------------------------------1ekranpokazywaniegrup ^^^^^^^^^^^-----------------------------------------
 
 
 // -------------------------------------------2ekranwybieraniegrupy vvvvvv----------------------------------------------
       // Ustawienie elementów dla ComboBox
-      WybierzGrupeComboBox.setItems(grupyUzytkownika);
+//      aktualizujListeGrup(WybranyUzytkownik);
+//      WybierzGrupeComboBox.setItems(grupyUzytkownika);
+//      WybranaGrupa = (Group) WybierzGrupeComboBox.getSelectionModel().getSelectedItem();
 
-// Ustawienie fabryki komórek dla rozwijanej listy
-      WybierzGrupeComboBox.setCellFactory(param -> new ListCell<Group>() {
-         @Override
-         protected void updateItem(Group group, boolean empty) {
-            super.updateItem(group, empty);
-            if (empty || group == null) {
-               setText(null); // Komórka pusta
-            } else {
-               setText(group.getName()); // Wyświetlanie nazwy grupy w rozwijanej liście
-            }
-         }
-      });
 
-// Ustawienie ButtonCell, która wyświetla wybraną wartość w ComboBox
-      WybierzGrupeComboBox.setButtonCell(new ListCell<Group>() {
-         @Override
-         protected void updateItem(Group group, boolean empty) {
-            super.updateItem(group, empty);
-            if (empty || group == null) {
-               setText("Wybierz grupę"); // Domyślny tekst, gdy nic nie wybrano
-            } else {
-               setText(group.getName()); // Wyświetlanie nazwy wybranej grupy
-            }
-         }
-      });
+//// Ustawienie fabryki komórek dla rozwijanej listy
+//      WybierzGrupeComboBox.setCellFactory(param -> new ListCell<Group>() {
+//         @Override
+//         protected void updateItem(Group group, boolean empty) {
+//            super.updateItem(group, empty);
+//            if (empty || group == null) {
+//               setText(null); // Komórka pusta
+//            } else {
+//               setText(group.getName()); // Wyświetlanie nazwy grupy w rozwijanej liście
+//            }
+//         }
+//      });
+//
+//// Ustawienie ButtonCell, która wyświetla wybraną wartość w ComboBox
+//      WybierzGrupeComboBox.setButtonCell(new ListCell<Group>() {
+//         @Override
+//         protected void updateItem(Group group, boolean empty) {
+//            super.updateItem(group, empty);
+//            if (empty || group == null) {
+//               setText("Wybierz grupę"); // Domyślny tekst, gdy nic nie wybrano
+//            } else {
+//               setText(group.getName()); // Wyświetlanie nazwy wybranej grupy
+//            }
+//         }
+//      });
 
 
 
@@ -191,20 +230,21 @@ public class MainController {
 
       WybierzGrupeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
          if (newValue != null) { // Upewnij się, że wybrano coś (newValue != null)
-            Group wybranagrupa = (Group) newValue;;
-            if (wybranagrupa != null) {
-               System.out.println("Wybrano grupę: " + ((Group) newValue).getName());
+            WybranaGrupa = (Group) newValue;;
+            if (WybranaGrupa != null) {
+               System.out.println("Wybrano grupę lsitener wybierz grupe : " + ((Group) newValue).getName());
                // Aktualizuj listę wydatków dla wybranej grupy
-               aktualizujWydatkiGrupy(wybranagrupa);
+               aktualizujWydatkiGrupy(WybranaGrupa);
             } else {
                System.out.println("Brak wybranej grupy.");
 
                // Jeśli brak wybranej grupy, wyczyść listę wydatków
                aktualizujWydatkiGrupy(null);
+//               wybranagrupa = WybierzGrupeComboBox.getSelectionModel().getSelectedItem();
             }
             refresh();
          }
-      });
+      }); // nie pokazuja sie wydatki po zakometnowacniu wydatki grup[y w sensie
 
 //-------------------------------------------2ekranwybieraniegrupy ^^^^^^^^^^^-----------------------------------
 
@@ -231,7 +271,7 @@ public class MainController {
 //-------------------------------------------2ekranwpokazywaniewydatkow ^^^^^^^^^^^^^^^-----------------------------------
 
 //---------------------------------------pokazwyanie twoichwydatkowvvvvvvv----------------------------------------
-
+//--------------------------------------------to bedzie do wyrzucenia--------------------------------------
       // Konfiguracja wyświetlania opisu wydatku w ListView
       ListaTwoichWydatkow.setCellFactory(param -> new ListCell<Expense>() {
          @Override
@@ -257,11 +297,25 @@ public class MainController {
 
 
    private void aktualizujListeZnajomych(User wybranyUser) {
-      znajomi = new FilteredList<>(Users, user -> !user.equals(wybranyUser));
+      ObservableList<User> nowiuserzy = FXCollections.observableArrayList();
+
+      for (User user : Users) {
+         if (!user.equals(wybranyUser)) {
+            nowiuserzy.add(user);
+         }
+      }
+      znajomi = nowiuserzy;
       ListaUzytkownikow.setItems(znajomi);
+
+      //do wyrzucenia ponizej chyba
+//      znajomi = new FilteredList<>(Users, user -> !user.equals(wybranyUser));
    }
 
    private void aktualizujWydatkiGrupy(Group WybranaGrupa) {
+      if (WybranaGrupa != null) {
+         tabelaGrupy.setItems(WybranaGrupa.getExpenses());
+      }
+      //do wyrzucenia ponizej chyba
       if (WybranaGrupa == null) {
          ListaWydatkowGupy.setItems(FXCollections.observableArrayList()); // Pusta lista
       } else {
@@ -271,13 +325,23 @@ public class MainController {
    }
 
    private void aktualizujListeGrup(User wybranyUser) {
-      grupyUzytkownika = new FilteredList<>(Groups, group -> group.getMembers().contains(wybranyUser));
+      ObservableList<Group> Nowagrupa = FXCollections.observableArrayList();
+      for (Group grupa : Groups) {
+         if(grupa.getMembers().contains(wybranyUser)) {
+            Nowagrupa.add(grupa);
+         }
+      }
+      grupyUzytkownika = Nowagrupa;
       ListaGrup.setItems(grupyUzytkownika);
-      Group temp = (Group) WybierzGrupeComboBox.getValue();
-      WybierzGrupeComboBox.getSelectionModel().clearSelection();
-      WybierzGrupeComboBox.setItems(grupyUzytkownika);
-//      WybierzGrupeComboBox.getSelectionModel().select();
-      WybranaGrupa = temp;
+
+      //do wyrzucenia ponizej chyba
+//      System.out.println(grupyUzytkownika + "grupy wybranego uztykownika");
+//      grupyUzytkownika = new FilteredList<>(Groups, group -> group.getMembers().contains(wybranyUser));
+//      Group temp = (Group) WybierzGrupeComboBox.getValue();
+//      WybierzGrupeComboBox.getSelectionModel().clearSelection();
+//      WybierzGrupeComboBox.setItems(grupyUzytkownika);
+////      WybierzGrupeComboBox.getSelectionModel().select();
+//      WybranaGrupa = temp;
    }
 
    private void aktualizujListewWydatkow() {
@@ -325,7 +389,7 @@ public class MainController {
       ExpenseController.setMainController(this);
 
       stage.show();
-//      refresh();
+      refresh();
    }
 
 
@@ -337,44 +401,50 @@ public class MainController {
          newgroup.addMember(user);
       }
       aktualizujListeGrup(WybranyUzytkownik);
+//      WybierzGrupeComboBox.setItems(grupyUzytkownika);
    }
 
    public void addUser( String name, String surname, double balance) throws IOException {
-      int id = getAvailableId();
-      User newuser = new User(id, name, surname, balance);
+//      int id = getAvailableId();
+      User newuser = new User(/*id,*/ name, surname, balance);
       Users.add(newuser);
       WybranyUzytkownik = newuser;
+
       WybierzUzytkownika.getSelectionModel().select(WybranyUzytkownik);
+//      refresh2();
 
    }
 
    public void addExpenseForUser(LocalDate datum, Group group, double price, String description, String category){
-      Expense newexpenseforuser = new Expense(WybranyUzytkownik.getId(), group, datum, price, description,WybranyUzytkownik);
+      Expense newexpenseforuser = new Expense(/*WybranyUzytkownik.getId(),*/ group, datum, price, description,WybranyUzytkownik);
       for(User user : group.getMembers()) {
          user.addExpense(newexpenseforuser);
          user.addSpending(newexpenseforuser.getPrice()/(double)group.getSize());
          user.addAllSpending(newexpenseforuser.getPrice());
       }
       aktualizujListewWydatkow();
-      WybranaGrupatextfield.setText(group.getName());
-      YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
-      YourAllMoney.setText(String.valueOf(WybranyUzytkownik.getAllSpending()));
+      refresh();
+//      WybranaGrupatextfield.setText(group.getName());
+//      YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
+//      YourAllMoney.setText(String.valueOf(WybranyUzytkownik.getAllSpending()));
 
-//      WybranaGrupatextfield.setText(WybranaGrupa.getName());
 
 
 
 
    }
    public void addExpenseForGroup(LocalDate datum, Group group, double price, String description){
-      Expense newexpenseforgroup = new Expense(WybranyUzytkownik.getId(), group, datum, price, description, WybranyUzytkownik);
+      Expense newexpenseforgroup = new Expense(/*WybranyUzytkownik.getId(),*/ group, datum, price, description, WybranyUzytkownik);
       group.addExpense(newexpenseforgroup);
-      ListaWydatkowGupy.setItems(group.getExpenses()); // Przypisanie listy wydatków
-      System.out.println(group.getExpenses());
-      group.updateBalances(newexpenseforgroup);
-      WybranaGrupa=group;
-      GroupAllMoney.setText(String.valueOf(group.getSpendings()));
-      GroupBalanceTextField.setText(String.valueOf(group.getSpendings()/(double)group.getSize()));
+      aktualizujWydatkiGrupy(group);
+
+      //ponizje chyba do usuniecia
+//      ListaWydatkowGupy.setItems(group.getExpenses()); // Przypisanie listy wydatków
+//      System.out.println(group.getExpenses());
+//      group.updateBalances(newexpenseforgroup);
+//      WybranaGrupa=group;
+//      GroupAllMoney.setText(String.valueOf(group.getSpendings()));
+//      GroupBalanceTextField.setText(String.valueOf(group.getSpendings()/(double)group.getSize()));
 
    }
 
@@ -385,7 +455,7 @@ public class MainController {
          for (Group group : dousuniecia) {
             group.removeMember(WybranyUzytkownik);
          }
-         returnId(WybranyUzytkownik.getId()); // Zwrócenie ID do puli wolnych ID
+//         returnId(WybranyUzytkownik.getId()); // Zwrócenie ID do puli wolnych ID
          Users.remove(WybranyUzytkownik);
       }
    }
@@ -403,27 +473,35 @@ public class MainController {
    }
 
 
-   private int getAvailableId() {
-      if (!wolneId.isEmpty()) {
-         return wolneId.pop(); // Pobierz ID ze stosu wolnych ID
-      } else {
-         return nextId++; // Wygeneruj nowe ID
-      }
-   }
+//   private int getAvailableId() {
+//      if (!wolneId.isEmpty()) {
+//         return wolneId.pop(); // Pobierz ID ze stosu wolnych ID
+//      } else {
+//         return nextId++; // Wygeneruj nowe ID
+//      }
+//   }
 
-   private void returnId(int id) {
-      if (id >= 0 && id < 10) { // Ograniczenie puli ID do 0-9
-         wolneId.push(id);
-      }
-   }
+//   private void returnId(int id) {
+//      if (id >= 0 && id < 10) { // Ograniczenie puli ID do 0-9
+//         wolneId.push(id);
+//      }
+//   }
 
    public void refresh(){
-      TwojeImie.setText(WybranyUzytkownik.getName());
-      TwojeNazwisko.setText(WybranyUzytkownik.getSurname());
-      TwojeSaldo.setText(String.valueOf(WybranyUzytkownik.getBalance() - WybranyUzytkownik.getSpending()));
-      aktualizujListeGrup(WybranyUzytkownik);
-      aktualizujListeZnajomych(WybranyUzytkownik);
-      WybranyUzytkownik = (User) WybierzUzytkownika.getValue();
+      if(WybranyUzytkownik != null) {
+         TwojeImie.setText(WybranyUzytkownik.getName());
+         TwojeNazwisko.setText(WybranyUzytkownik.getSurname());
+         TwojeSaldo.setText(String.valueOf(WybranyUzytkownik.getBalance() - WybranyUzytkownik.getSpending()));
+         aktualizujListeGrup(WybranyUzytkownik);
+         aktualizujListeZnajomych(WybranyUzytkownik);
+         WybranyUzytkownik = (User) WybierzUzytkownika.getValue();
+         YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
+         YourAllMoney.setText(String.valueOf(WybranyUzytkownik.getAllSpending()));
+         aktualizujListewWydatkow();
+      }
+      else{
+
+      }
       if(WybranaGrupa!=null) {
          System.out.println(WybranaGrupa.getName());
          WybranaGrupatextfield.setText(WybranaGrupa.getName());
@@ -432,14 +510,12 @@ public class MainController {
          GroupBalanceTextField.setText(String.valueOf(WybranaGrupa.getSpendings()/(double)WybranaGrupa.getSize()));
       }
       else{
+         tabelaGrupy.setItems(null);
          ListaWydatkowGupy.setItems(null);
          WybranaGrupatextfield.setText("Nie wybrales grupy");
          GroupAllMoney.setText("Nie wybrales grupy");
          GroupBalanceTextField.setText("Nie wybrales grupy");
       }
-      YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
-      YourAllMoney.setText(String.valueOf(WybranyUzytkownik.getAllSpending()));
-      aktualizujListewWydatkow();
 //      YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getOverallBalance()));
    }
 
@@ -448,7 +524,9 @@ public class MainController {
       alert.setTitle("Błąd");
       alert.setHeaderText(null);
       alert.setContentText(wiadomosc);
-      alert.showAndWait(); }
+      alert.showAndWait();
+   }
+
 
 
 

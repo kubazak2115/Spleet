@@ -106,22 +106,26 @@ public class Group {
         return members;
     }
 
-    public void updateBalances(Expense expense) {
-        ObservableList<User> members = (ObservableList<User>) getMembers();
-        double splitAmount = expense.getPrice() / members.size();
+//    public void updateBalances(Expense expense) {
+//        ObservableList<User> members = (ObservableList<User>) getMembers();
+//        double splitAmount = expense.getPrice() / members.size();
+//
+//        for (User member : members) {
+//            Balance groupBalance = member.getBalanceForGroup(this);
+//            if (groupBalance == null) {
+//                groupBalance = new Balance(member, this, 0.0);
+//                member.getBalances().add(groupBalance);
+//            }
+//
+//            if (expense.getAuthor() != null && expense.getAuthor().equals(member)) {
+//                groupBalance.updateBalance(expense.getPrice() - splitAmount);
+//            } else {
+//                groupBalance.updateBalance(-splitAmount);
+//            }
+//        }
+//    }
 
-        for (User member : members) {
-            Balance groupBalance = member.getBalanceForGroup(this);
-            if (groupBalance == null) {
-                groupBalance = new Balance(member, this, 0.0);
-                member.getBalances().add(groupBalance);
-            }
-
-            if (expense.getAuthor() != null && expense.getAuthor().equals(member)) {
-                groupBalance.updateBalance(expense.getPrice() - splitAmount);
-            } else {
-                groupBalance.updateBalance(-splitAmount);
-            }
-        }
+    public String toString(){
+        return getName() ;
     }
 }

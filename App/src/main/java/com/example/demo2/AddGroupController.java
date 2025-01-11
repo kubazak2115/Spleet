@@ -27,7 +27,7 @@ public class AddGroupController {
     public void setMainController(MainController newMainController) {
         this.MainController = newMainController;
         updateListView();
-        System.out.println(newMainController);
+//        System.out.println(newMainController);
 
     }
     @FXML
@@ -35,17 +35,17 @@ public class AddGroupController {
         updateListView();
         ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        ListaCzlonkow.setCellFactory(param -> new ListCell<User>() {
-            @Override
-            protected void updateItem(User user, boolean empty) {
-                super.updateItem(user, empty);
-                if (empty || user == null) {
-                    setText(null); // Gdy element jest pusty
-                } else {
-                    setText(user.getName() + " " + user.getSurname()); // Wyświetlanie imienia i nazwiska
-                }
-            }
-        });
+//        ListaCzlonkow.setCellFactory(param -> new ListCell<User>() {
+//            @Override
+//            protected void updateItem(User user, boolean empty) {
+//                super.updateItem(user, empty);
+//                if (empty || user == null) {
+//                    setText(null); // Gdy element jest pusty
+//                } else {
+//                    setText(user.getName() + " " + user.getSurname()); // Wyświetlanie imienia i nazwiska
+//                }
+//            }
+//        });
 
 //        System.out.println(MainController);
 
@@ -67,10 +67,10 @@ public class AddGroupController {
             // Dodanie grupy do kontrolera głównego
 
             ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-            System.out.println("multiple zaincicjowane");
+//            System.out.println("multiple zaincicjowane");
             ObservableList<User> selectedUsers = FXCollections.observableArrayList();
             selectedUsers.addAll(ListaCzlonkow.getSelectionModel().getSelectedItems());
-            System.out.println(selectedUsers + "powinno byc 3");
+//            System.out.println(selectedUsers + "powinno byc 3");
 
 
 //            User selectedUser= (User) ListaCzlonkow.getSelectionModel().getSelectedItem();
