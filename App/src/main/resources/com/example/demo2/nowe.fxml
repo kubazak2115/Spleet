@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="770.0" prefWidth="985.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo2.MainController">
+<AnchorPane prefHeight="770.0" prefWidth="985.0" style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo2.MainController">
     <children>
         <VBox prefHeight="770.0" prefWidth="1004.0">
             <children>
@@ -62,14 +72,25 @@
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TableView fx:id="tabelaGrupy" layoutX="59.0" layoutY="94.0" prefHeight="309.0" prefWidth="376.0">
+                              <TableView fx:id="tabelaGrupy" layoutX="14.0" layoutY="14.0" prefHeight="310.0" prefWidth="453.0">
                                 <columns>
                                   <TableColumn fx:id="kolumnaNazwa" prefWidth="75.0" text="nazwa" />
                                   <TableColumn fx:id="kolumnaWartosc" prefWidth="75.0" text="wartość" />
                                     <TableColumn fx:id="kolumnaGrupa" prefWidth="75.0" text="grupa" />
                                     <TableColumn fx:id="kolumnaAutor" prefWidth="75.0" text="autor" />
                                     <TableColumn fx:id="kolumnaData" prefWidth="75.0" text="data" />
+                                    <TableColumn fx:id="kolumnaKategoria" prefWidth="75.0" text="kategoria" />
                                 </columns>
+                              </TableView>
+                              <TableView fx:id="tabelaUzytkownika" layoutX="493.0" layoutY="14.0" prefHeight="310.0" prefWidth="453.0">
+                                 <columns>
+                                    <TableColumn fx:id="kolumnaNazwa2" prefWidth="75.0" text="nazwa" />
+                                    <TableColumn fx:id="kolumnaWartosc2" prefWidth="75.0" text="wartość" />
+                                    <TableColumn fx:id="kolumnaGrupa2" prefWidth="75.0" text="grupa" />
+                                    <TableColumn fx:id="kolumnaAutor2" prefWidth="75.0" text="autor" />
+                                    <TableColumn fx:id="kolumnaData2" prefWidth="75.0" text="data" />
+                                    <TableColumn fx:id="kolumnaKategoria2" prefWidth="75.0" text="kategoria" />
+                                 </columns>
                               </TableView>
                            </children></AnchorPane>
                             </content>

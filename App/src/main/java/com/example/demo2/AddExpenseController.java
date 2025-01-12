@@ -18,6 +18,7 @@ public class AddExpenseController {
     public ComboBox PodziaWydatku;
     public Button DodajWydatek;
     public Button OdzrucWydatek;
+    public ComboBox KategoriaWydatku;
 
     private MainController mainController;
 
@@ -30,45 +31,17 @@ public class AddExpenseController {
     public void initialize(User WybranyUzytkownik, ObservableList<Group> grupyuzytkownika) {
         ObservableList<String> wydatkiOpcje = FXCollections.observableArrayList(
                 "Po równo"
+
+        );
+        ObservableList<String> kategorieOpcje = FXCollections.observableArrayList(
+                "Inwestycje", "Jedzenie", "Rozrywka", "Transport", "Inne"
+
         );
 
         GrupaWydatku.setItems(grupyuzytkownika);
+        KategoriaWydatku.setItems(kategorieOpcje);
 
-        // Konfiguracja wyświetlania nazw grup w ComboBox
-//        GrupaWydatku.setCellFactory(param -> new ListCell<Group>() {
-//            @Override
-//            protected void updateItem(Group group, boolean empty) {
-//                super.updateItem(group, empty);
-//                if (empty || group == null) {
-//                    setText(null);
-//                } else {
-//                    setText(group.getName());
-//                }
-//            }
-//        });
-//
-//        GrupaWydatku.setButtonCell(new ListCell<Group>() {
-//            @Override
-//            protected void updateItem(Group group, boolean empty) {
-//                super.updateItem(group, empty);
-//                if (empty || group == null) {
-//                    setText(null);
-//                } else {
-//                    setText(group.getName());
-//                }
-//            }
-//        });
 
-//        // Listener do aktualizacji PodziaWydatku po zmianie wybranej grupy
-//        GrupaWydatku.valueProperty().addListener((observable, oldValue, selectedGroup) -> {
-//            if (selectedGroup != null) {
-//                Group newselectedgroup = (Group) selectedGroup;
-//                ObservableList<User> members = FXCollections.observableArrayList(newselectedgroup.getMembers());
-//                PodziaWydatku.setItems(members);
-//            } else {
-//                PodziaWydatku.setItems(FXCollections.observableArrayList());
-//            }
-//        });
         PodziaWydatku.setItems(wydatkiOpcje);
 
     }
@@ -85,7 +58,7 @@ public class AddExpenseController {
             datum = DataWydatku.getValue();
             price = Double.parseDouble(WartoscWydatku.getText());
             description = NazwaWydatku.getText();
-
+            category = KategoriaWydatku.getValue().toString();
         }
         catch(NumberFormatException e){
             pokazBlad("Niepoprawne dane liczbowe. Spróbuj ponownie.");
@@ -94,7 +67,7 @@ public class AddExpenseController {
 
         Group wybranagrupa = (Group) GrupaWydatku.getValue();
 //        System.out.println(wybranagrupa);
-        mainController.addExpenseForGroup(datum, wybranagrupa, price, description);
+        mainController.addExpenseForGroup(datum, wybranagrupa, price, description, category);
         mainController.addExpenseForUser(datum, wybranagrupa, price, description, category);
 
         Stage stage = (Stage) DodajWydatek.getScene().getWindow();

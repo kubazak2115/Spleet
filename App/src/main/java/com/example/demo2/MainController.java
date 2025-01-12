@@ -41,6 +41,7 @@ public class MainController {
    public TextField GroupAllMoney;
    public TextField KategoriaWydatku;
 
+   //tabela 1
    @FXML
    public TableView<Expense> tabelaGrupy;
 
@@ -55,6 +56,22 @@ public class MainController {
    private TableColumn<Expense, String> kolumnaAutor;
    @FXML
    private TableColumn<Expense, LocalDate> kolumnaData;
+
+   //tabela 2
+   @FXML
+   public TableView<Expense> tabelaUzytkownika;
+
+
+   @FXML
+   private TableColumn<Expense, String> kolumnaNazwa2;
+   @FXML
+   private TableColumn<Expense, Double> kolumnaWartosc2;
+   @FXML
+   private TableColumn<Expense, String> kolumnaGrupa2;
+   @FXML
+   private TableColumn<Expense, String> kolumnaAutor2;
+   @FXML
+   private TableColumn<Expense, LocalDate> kolumnaData2;
 
    private ObservableList<Group> Groups = FXCollections.observableArrayList();
    private ObservableList<User> Users = FXCollections.observableArrayList();
@@ -89,8 +106,8 @@ public class MainController {
 
       addUser("rober", "lewy", 32);
       LocalDate datka = LocalDate.now();
-      addExpenseForGroup(datka, Groups.get(0),34, "kot");
-      addExpenseForUser(datka, Groups.get(0),34, "kot", "obiat");
+      addExpenseForGroup(datka, Groups.get(0),34, "kot", "jedzenie");
+      addExpenseForUser(datka, Groups.get(0),34, "kot", "Jedzenie");
 
 
 
@@ -346,6 +363,9 @@ public class MainController {
 
    private void aktualizujListewWydatkow() {
       ListaTwoichWydatkow.setItems(WybranyUzytkownik.getExpenses());
+      if(WybranyUzytkownik != null) {
+         tabelaUzytkownika.setItems(WybranyUzytkownik.getExpenses());
+      }
    }
 
 
@@ -416,7 +436,7 @@ public class MainController {
    }
 
    public void addExpenseForUser(LocalDate datum, Group group, double price, String description, String category){
-      Expense newexpenseforuser = new Expense(/*WybranyUzytkownik.getId(),*/ group, datum, price, description,WybranyUzytkownik);
+      Expense newexpenseforuser = new Expense(/*WybranyUzytkownik.getId(),*/ group, datum, price, description,  WybranyUzytkownik, category);
       for(User user : group.getMembers()) {
          user.addExpense(newexpenseforuser);
          user.addSpending(newexpenseforuser.getPrice()/(double)group.getSize());
@@ -433,8 +453,8 @@ public class MainController {
 
 
    }
-   public void addExpenseForGroup(LocalDate datum, Group group, double price, String description){
-      Expense newexpenseforgroup = new Expense(/*WybranyUzytkownik.getId(),*/ group, datum, price, description, WybranyUzytkownik);
+   public void addExpenseForGroup(LocalDate datum, Group group, double price, String description, String category){
+      Expense newexpenseforgroup = new Expense( WybranyUzytkownik ,group, datum, price, description, category);
       group.addExpense(newexpenseforgroup);
       aktualizujWydatkiGrupy(group);
 
