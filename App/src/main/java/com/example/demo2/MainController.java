@@ -10,6 +10,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -31,15 +33,10 @@ public class MainController {
    public Button UsunUzytkownika;
    public ListView ListaGrup;
    public Button DodajWydatek;
-   public ListView ListaWydatkowGupy;
-   public ListView ListaTwoichWydatkow;
    public ComboBox WybierzGrupeComboBox;
    public TextField GroupBalanceTextField;
    public TextField YourBanalceTextField;
-   public TextField WybranaGrupatextfield;
-   public TextField YourAllMoney;
-   public TextField GroupAllMoney;
-   public TextField KategoriaWydatku;
+
 
    //tabela 1
    @FXML
@@ -56,6 +53,8 @@ public class MainController {
    private TableColumn<Expense, String> kolumnaAutor;
    @FXML
    private TableColumn<Expense, LocalDate> kolumnaData;
+   @FXML
+   private TableColumn<Expense, LocalDate> kolumnaKategoria;
 
    //tabela 2
    @FXML
@@ -72,6 +71,11 @@ public class MainController {
    private TableColumn<Expense, String> kolumnaAutor2;
    @FXML
    private TableColumn<Expense, LocalDate> kolumnaData2;
+   @FXML
+   private TableColumn<Expense, LocalDate> kolumnaKategoria2;
+
+   @FXML
+   private BarChart BarChart;
 
    private ObservableList<Group> Groups = FXCollections.observableArrayList();
    private ObservableList<User> Users = FXCollections.observableArrayList();
@@ -93,6 +97,8 @@ public class MainController {
       kolumnaGrupa.setCellValueFactory(new PropertyValueFactory<>("expenseGroup"));
       kolumnaAutor.setCellValueFactory(new PropertyValueFactory<>("author"));
       kolumnaData.setCellValueFactory(new PropertyValueFactory<>("datum"));
+      kolumnaKategoria.setCellValueFactory(new PropertyValueFactory<>("category"));
+
 
       addUser("tom", "ford", 23423);
       addUser("jan", "pawel", 343);
@@ -106,9 +112,15 @@ public class MainController {
 
       addUser("rober", "lewy", 32);
       LocalDate datka = LocalDate.now();
-      addExpenseForGroup(datka, Groups.get(0),34, "kot", "jedzenie");
+      addExpenseForGroup(datka, Groups.get(0),34, "kot", "Jedzenie");
       addExpenseForUser(datka, Groups.get(0),34, "kot", "Jedzenie");
 
+      kolumnaNazwa2.setCellValueFactory(new PropertyValueFactory<>("description"));
+      kolumnaWartosc2.setCellValueFactory(new PropertyValueFactory<>("price"));
+      kolumnaGrupa2.setCellValueFactory(new PropertyValueFactory<>("expenseGroup"));
+      kolumnaAutor2.setCellValueFactory(new PropertyValueFactory<>("author"));
+      kolumnaData2.setCellValueFactory(new PropertyValueFactory<>("datum"));
+      kolumnaKategoria2.setCellValueFactory(new PropertyValueFactory<>("category"));
 
 
 
@@ -173,6 +185,7 @@ public class MainController {
             aktualizujListeGrup((User) newUser);
             WybierzGrupeComboBox.setItems(grupyUzytkownika);
             aktualizujWydatkiGrupy(WybranaGrupa);
+            aktualizujWykres();
             //System.out.println(WybranaGrupa.getName() + " restwybranagrupalsitenr");
             if (!WybranyUzytkownik.getGroups().contains(WybranaGrupa)) {
                WybranaGrupa = null;
@@ -269,20 +282,7 @@ public class MainController {
 //-------------------------------------------2ekranwpokazywaniewydatkow vvvvvvvvvvvv-----------------------------------
 
 
-      ListaWydatkowGupy.setCellFactory(param -> new ListCell<Expense>() {
-         @Override
-         protected void updateItem(Expense expense, boolean empty) {
-            super.updateItem(expense, empty);
-            if (empty || expense == null) {
-               setText(null); // Komórka pusta
-            } else {
-               // Ustawienie niestandardowego tekstu dla komórki
-               setText("WYDATEK: " + expense.getDescription() + " Z GRUPY " + expense.getExpenseGroup().getName() +
-                       " O WARTOSCI : " + expense.getPrice() + " DOKONAL " + expense.getAuthor().getName() + " "+
-                       expense.getAuthor().getSurname() + " DNIA " + expense.getDatum()  );
-            }
-         }
-      });
+
 
 
 //-------------------------------------------2ekranwpokazywaniewydatkow ^^^^^^^^^^^^^^^-----------------------------------
@@ -290,23 +290,35 @@ public class MainController {
 //---------------------------------------pokazwyanie twoichwydatkowvvvvvvv----------------------------------------
 //--------------------------------------------to bedzie do wyrzucenia--------------------------------------
       // Konfiguracja wyświetlania opisu wydatku w ListView
-      ListaTwoichWydatkow.setCellFactory(param -> new ListCell<Expense>() {
-         @Override
-         protected void updateItem(Expense expense, boolean empty) {
-            super.updateItem(expense, empty);
-            if (empty || expense == null) {
-               setText(null);
-            } else {
-               setText("WYDATEK: " + expense.getDescription() + " Z GRUPY " + expense.getExpenseGroup().getName() +
-                       " O WARTOSCI : " + expense.getPrice() + " DOKONAL " + expense.getAuthor().getName() + " "+ expense.getAuthor().getSurname() +
-                       " DNIA " + expense.getDatum() );
-            }
-         }
-      });
+
 
 
 
    }
+
+   public void aktualizujWykres() {
+      if(WybranyUzytkownik != null) {
+      BarChart.getData().clear(); // Czyszczenie wykresu
+
+      LocalDate datka = LocalDate.now();
+         XYChart.Series<String, Number> series = new XYChart.Series<>();
+         series.setName(String.valueOf(WybranyUzytkownik));
+
+         // Tworzenie danych dla każdego dnia w tygodniu
+         for (int i = 6; i >=0; i--) {
+            double expenseSum = 0;
+            for (Expense expense : WybranyUzytkownik.getExpenses()) {
+               if (expense.getDatum().equals(datka.minusDays(i))) {
+                  expenseSum += expense.getPrice() / expense.getExpenseGroup().getSize();
+               }
+            }
+            // Dodanie danych do serii
+            series.getData().add(new XYChart.Data<>(datka.minusDays(i).toString(), expenseSum));
+         }
+         BarChart.getData().add(series); // Dodanie serii do wykresu
+      }
+   }
+
 
 
 
@@ -332,13 +344,6 @@ public class MainController {
       if (WybranaGrupa != null) {
          tabelaGrupy.setItems(WybranaGrupa.getExpenses());
       }
-      //do wyrzucenia ponizej chyba
-      if (WybranaGrupa == null) {
-         ListaWydatkowGupy.setItems(FXCollections.observableArrayList()); // Pusta lista
-      } else {
-         // Pobierz wydatki dla wybranej grupy
-         ListaWydatkowGupy.setItems(FXCollections.observableArrayList(WybranaGrupa.getExpenses()));
-      }
    }
 
    private void aktualizujListeGrup(User wybranyUser) {
@@ -349,20 +354,10 @@ public class MainController {
          }
       }
       grupyUzytkownika = Nowagrupa;
-      ListaGrup.setItems(grupyUzytkownika);
 
-      //do wyrzucenia ponizej chyba
-//      System.out.println(grupyUzytkownika + "grupy wybranego uztykownika");
-//      grupyUzytkownika = new FilteredList<>(Groups, group -> group.getMembers().contains(wybranyUser));
-//      Group temp = (Group) WybierzGrupeComboBox.getValue();
-//      WybierzGrupeComboBox.getSelectionModel().clearSelection();
-//      WybierzGrupeComboBox.setItems(grupyUzytkownika);
-////      WybierzGrupeComboBox.getSelectionModel().select();
-//      WybranaGrupa = temp;
    }
 
    private void aktualizujListewWydatkow() {
-      ListaTwoichWydatkow.setItems(WybranyUzytkownik.getExpenses());
       if(WybranyUzytkownik != null) {
          tabelaUzytkownika.setItems(WybranyUzytkownik.getExpenses());
       }
@@ -444,9 +439,7 @@ public class MainController {
       }
       aktualizujListewWydatkow();
       refresh();
-//      WybranaGrupatextfield.setText(group.getName());
-//      YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
-//      YourAllMoney.setText(String.valueOf(WybranyUzytkownik.getAllSpending()));
+
 
 
 
@@ -516,24 +509,19 @@ public class MainController {
          aktualizujListeZnajomych(WybranyUzytkownik);
          WybranyUzytkownik = (User) WybierzUzytkownika.getValue();
          YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
-         YourAllMoney.setText(String.valueOf(WybranyUzytkownik.getAllSpending()));
          aktualizujListewWydatkow();
+         aktualizujWykres();
       }
       else{
 
       }
       if(WybranaGrupa!=null) {
          System.out.println(WybranaGrupa.getName());
-         WybranaGrupatextfield.setText(WybranaGrupa.getName());
          GroupBalanceTextField.setText(String.valueOf(WybranaGrupa.getBalance(WybranyUzytkownik)));
-         GroupAllMoney.setText(String.valueOf(WybranaGrupa.getSpendings()));
          GroupBalanceTextField.setText(String.valueOf(WybranaGrupa.getSpendings()/(double)WybranaGrupa.getSize()));
       }
       else{
          tabelaGrupy.setItems(null);
-         ListaWydatkowGupy.setItems(null);
-         WybranaGrupatextfield.setText("Nie wybrales grupy");
-         GroupAllMoney.setText("Nie wybrales grupy");
          GroupBalanceTextField.setText("Nie wybrales grupy");
       }
 //      YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getOverallBalance()));
