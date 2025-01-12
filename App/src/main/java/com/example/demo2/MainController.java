@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +20,8 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.http.WebSocket;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Stack;
 
 public class MainController {
@@ -76,6 +79,9 @@ public class MainController {
 
    @FXML
    private BarChart BarChart;
+
+   @FXML
+   private PieChart PieChart;
 
    private ObservableList<Group> Groups = FXCollections.observableArrayList();
    private ObservableList<User> Users = FXCollections.observableArrayList();
@@ -186,6 +192,7 @@ public class MainController {
             WybierzGrupeComboBox.setItems(grupyUzytkownika);
             aktualizujWydatkiGrupy(WybranaGrupa);
             aktualizujWykres();
+            aktualizujWykresPieChart();
             //System.out.println(WybranaGrupa.getName() + " restwybranagrupalsitenr");
             if (!WybranyUzytkownik.getGroups().contains(WybranaGrupa)) {
                WybranaGrupa = null;
@@ -318,6 +325,28 @@ public class MainController {
          BarChart.getData().add(series); // Dodanie serii do wykresu
       }
    }
+
+   public void aktualizujWykresPieChart() {
+      PieChart.getData().clear();  // Czyszczenie wykresu
+
+      Map<String, Double> wydatkiNaKategorie = new HashMap<>();
+
+      // Iterujemy przez wydatki użytkownika
+      for (Expense expense : WybranyUzytkownik.getExpenses()) {
+         String kategoria = expense.getCategory().toString();
+         double cena = expense.getPrice() / expense.getExpenseGroup().getSize();
+
+         // Dodajemy wydatki do odpowiedniej kategorii
+         wydatkiNaKategorie.put(kategoria, wydatkiNaKategorie.getOrDefault(kategoria, 0.0) + cena);
+      }
+
+      // Dodanie danych do wykresu piechart
+      for (Map.Entry<String, Double> entry : wydatkiNaKategorie.entrySet()) {
+         PieChart.Data data = new PieChart.Data(entry.getKey(), entry.getValue());
+         PieChart.getData().add(data);
+      }
+   }
+
 
 
 
