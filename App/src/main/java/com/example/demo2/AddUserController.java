@@ -27,7 +27,7 @@ public class AddUserController {
 
     public void onZatwierdzButton(ActionEvent actionEvent) throws IOException {
 
-//        int id =666;
+
         String name = "";
         String surname ="";
         double balance = 0;
@@ -40,7 +40,6 @@ public class AddUserController {
         }
         catch(NumberFormatException e){
             System.out.println("Niepoprawne dane liczbowe. Spróbuj ponownie.");
-//            return;
         }
         catch(ClassCastException e){
             System.out.println("Niepoprawny format danych. Spróbuj ponownie.");

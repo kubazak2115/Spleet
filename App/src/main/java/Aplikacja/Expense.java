@@ -3,21 +3,17 @@ package Aplikacja;
 import java.time.LocalDate;
 
 public class Expense {
-//    private int id;
     private LocalDate datum;
     private double price;
     private String description;
     private User author;
-//    private String authorName;
     private Group expenseGroup;
-//    private String groupName;
-    private String category; // Kategoria wydatku
+    private String category;
 
 
     public Expense( User author, Group group, LocalDate datum, double price, String description, String category) {
-//
+
         this.author = author;
-//        this.authorName = author.getName()+" "+author.getSurname();
         this.datum = datum;
         this.price = price;
         this.description = description;
@@ -26,10 +22,7 @@ public class Expense {
     }
 
     public Expense( Group group, LocalDate datum, double price, String description, User author, String category) {
-//        this.id = id;
         this.expenseGroup = group;
-//        this.groupName = group.getName();
-//        this.authorName = author.getName()+" "+author.getSurname();
         this.datum = datum;
         this.price = price;
         this.description = description;
@@ -38,10 +31,6 @@ public class Expense {
     }
 
 
-    // Gettery i settery
-//    public int getId() {
-//        return id;
-//    }
 
     public Group getExpenseGroup() {
         return expenseGroup;
@@ -66,14 +55,6 @@ public class Expense {
     public String getCategory() {
         return category;
     }
-
-//    public String getAuthorName() {
-//        return authorName;
-//    }
-//
-//    public String getGroupName() {
-//        return groupName;
-//    }
 
     public void setCategory(String category) {
         this.category = category;

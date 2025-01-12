@@ -62,11 +62,9 @@ public class AddExpenseController {
         }
         catch(NumberFormatException e){
             pokazBlad("Niepoprawne dane liczbowe. Spróbuj ponownie.");
-//            return;
         }
 
         Group wybranagrupa = (Group) GrupaWydatku.getValue();
-//        System.out.println(wybranagrupa);
         mainController.addExpenseForGroup(datum, wybranagrupa, price, description, category);
         mainController.addExpenseForUser(datum, wybranagrupa, price, description, category);
 

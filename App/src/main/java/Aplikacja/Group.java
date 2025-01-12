@@ -23,40 +23,9 @@ public class Group {
 
     public void addExpense(Expense expense) {
         expenses.add(expense);
-//        if (expense.getPrice() > 0 && members.contains(expense.getAuthor())) {
-//            // Split expense equally among members
-//            double splitAmount = expense.getPrice() / members.size();
-//            for (User member : members) {
-//                if (member.equals(expense.getAuthor())) {
-//                    // Author's balance decreases by the full amount
-//                    updateBalance(member, getBalance(member) - expense.getPrice());
-//                } else {
-//                    // Other members' balances increase by their share
-//                    updateBalance(member, getBalance(member) + splitAmount);
-//                }
-//            }
-//
-//        }
-
         this.spendings-=expense.getPrice();
     }
 
-//    public void removeExpense(Expense expense) {
-//        expenses.remove(expense);
-//        if (expense.getPrice() > 0 && members.contains(expense.getAuthor())) {
-//            // Revert balance adjustments for the removed expense
-//            double splitAmount = expense.getPrice() / members.size();
-//            for (User member : members) {
-//                if (member.equals(expense.getAuthor())) {
-//                    // Author's balance increases by the full amount
-//                    updateBalance(member, getBalance(member) + expense.getPrice());
-//                } else {
-//                    // Other members' balances decrease by their share
-//                    updateBalance(member, getBalance(member) - splitAmount);
-//                }
-//            }
-//        }
-//    }
 
     public ObservableList<Expense> getExpenses() {
         return expenses;
@@ -105,25 +74,6 @@ public class Group {
     public Collection<User> getMembers() {
         return members;
     }
-
-//    public void updateBalances(Expense expense) {
-//        ObservableList<User> members = (ObservableList<User>) getMembers();
-//        double splitAmount = expense.getPrice() / members.size();
-//
-//        for (User member : members) {
-//            Balance groupBalance = member.getBalanceForGroup(this);
-//            if (groupBalance == null) {
-//                groupBalance = new Balance(member, this, 0.0);
-//                member.getBalances().add(groupBalance);
-//            }
-//
-//            if (expense.getAuthor() != null && expense.getAuthor().equals(member)) {
-//                groupBalance.updateBalance(expense.getPrice() - splitAmount);
-//            } else {
-//                groupBalance.updateBalance(-splitAmount);
-//            }
-//        }
-//    }
 
     public String toString(){
         return getName() ;
