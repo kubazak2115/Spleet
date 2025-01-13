@@ -5,7 +5,6 @@ import Aplikacja.Group;
 import Aplikacja.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,27 +17,25 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.http.WebSocket;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 public class MainController {
 
-   public Button AddUser;
-   public Button UtworzGrupe;
-   public ListView ListaUzytkownikow;
-   public ComboBox WybierzUzytkownika;
-   public TextField TwojeImie;
-   public TextField TwojeNazwisko;
-   public TextField TwojeSaldo;
-   public Button UsunUzytkownika;
-   public ListView ListaGrup;
-   public Button DodajWydatek;
-   public ComboBox WybierzGrupeComboBox;
-   public TextField GroupBalanceTextField;
-   public TextField YourBanalceTextField;
+   public Button addUser;
+   public Button utworzGrupe;
+   public ListView listaUzytkownikow;
+   public ComboBox wybierzUzytkownika;
+   public TextField twojeImie;
+   public TextField twojeNazwisko;
+   public TextField twojeSaldo;
+   public Button usunUzytkownika;
+   public ListView listaGrup;
+   public Button dodajWydatek;
+   public ComboBox wybierzGrupeComboBox;
+   public TextField groupBalanceTextField;
+   public TextField yourBanalceTextField;
 
 
    //tabela 1
@@ -152,19 +149,19 @@ public class MainController {
       refresh();
 
 
-      ListaUzytkownikow.setItems(Users);
+      listaUzytkownikow.setItems(Users);
 
-      WybierzUzytkownika.setItems(Users); // Powiązanie ComboBox z listą użytkowników
+      wybierzUzytkownika.setItems(Users); // Powiązanie ComboBox z listą użytkowników
 
 
 
       // Obsługa zmiany wybranego użytkownika
-      WybierzUzytkownika.getSelectionModel().selectedItemProperty().addListener((obs, oldUser, newUser) -> {
+      wybierzUzytkownika.getSelectionModel().selectedItemProperty().addListener((obs, oldUser, newUser) -> {
          WybranyUzytkownik = (User) newUser;
          if (newUser != null) {
             aktualizujListeZnajomych((User) newUser);
             aktualizujListeGrup((User) newUser);
-            WybierzGrupeComboBox.setItems(grupyUzytkownika);
+            wybierzGrupeComboBox.setItems(grupyUzytkownika);
             aktualizujWydatkiGrupy(WybranaGrupa);
             aktualizujWykres();
             aktualizujWykresPieChart();
@@ -177,7 +174,7 @@ public class MainController {
       });
 
 
-      WybierzGrupeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+      wybierzGrupeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
          if (newValue != null) { // Upewnij się, że wybrano coś (newValue != null)
             WybranaGrupa = (Group) newValue;;
             if (WybranaGrupa != null) {
@@ -251,7 +248,7 @@ public class MainController {
          }
       }
       znajomi = nowiuserzy;
-      ListaUzytkownikow.setItems(znajomi);
+      listaUzytkownikow.setItems(znajomi);
 
    }
 
@@ -269,7 +266,7 @@ public class MainController {
          }
       }
       grupyUzytkownika = Nowagrupa;
-      ListaGrup.setItems(grupyUzytkownika);
+      listaGrup.setItems(grupyUzytkownika);
    }
 
    private void aktualizujListewWydatkow() {
@@ -338,7 +335,7 @@ public class MainController {
       Users.add(newuser);
       WybranyUzytkownik = newuser;
 
-      WybierzUzytkownika.getSelectionModel().select(WybranyUzytkownik);
+      wybierzUzytkownika.getSelectionModel().select(WybranyUzytkownik);
    }
 
    public void addExpenseForUser(LocalDate datum, Group group, double price, String description, String category){
@@ -388,13 +385,13 @@ public class MainController {
 
    public void refresh(){
       if(WybranyUzytkownik != null) {
-         TwojeImie.setText(WybranyUzytkownik.getName());
-         TwojeNazwisko.setText(WybranyUzytkownik.getSurname());
-         TwojeSaldo.setText(String.valueOf(WybranyUzytkownik.getBalance() + WybranyUzytkownik.getSpending()));
+         twojeImie.setText(WybranyUzytkownik.getName());
+         twojeNazwisko.setText(WybranyUzytkownik.getSurname());
+         twojeSaldo.setText(String.valueOf(WybranyUzytkownik.getBalance() + WybranyUzytkownik.getSpending()));
          aktualizujListeGrup(WybranyUzytkownik);
          aktualizujListeZnajomych(WybranyUzytkownik);
-         WybranyUzytkownik = (User) WybierzUzytkownika.getValue();
-         YourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
+         WybranyUzytkownik = (User) wybierzUzytkownika.getValue();
+         yourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
          aktualizujListewWydatkow();
       }
       else{
@@ -402,12 +399,12 @@ public class MainController {
       }
       if(WybranaGrupa!=null) {
          System.out.println(WybranaGrupa.getName());
-         GroupBalanceTextField.setText(String.valueOf(WybranaGrupa.getBalance(WybranyUzytkownik)));
-         GroupBalanceTextField.setText(String.valueOf(WybranaGrupa.getSpendings()/(double)WybranaGrupa.getSize()));
+         groupBalanceTextField.setText(String.valueOf(WybranaGrupa.getBalance(WybranyUzytkownik)));
+         groupBalanceTextField.setText(String.valueOf(WybranaGrupa.getSpendings()/(double)WybranaGrupa.getSize()));
       }
       else{
          tabelaGrupy.setItems(null);
-         GroupBalanceTextField.setText("Nie wybrales grupy");
+         groupBalanceTextField.setText("Nie wybrales grupy");
       }
    }
 
