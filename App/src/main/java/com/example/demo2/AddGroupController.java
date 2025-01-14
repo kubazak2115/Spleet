@@ -31,31 +31,33 @@ public class AddGroupController {
     public void initialize() {
         updateListView();
         ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
     }
 
     @FXML
     public void onZatwierdzButtonG(ActionEvent actionEvent) throws IOException {
-
         String name = nazwaTextfield.getText();
 
         if (name.isEmpty()) {
-            System.out.println("Nazwa grupy nie może być pusta.");
+            pokazBlad("Nazwa grupy nie może być pusta.");
             return;
         }
-
         try {
             ListaCzlonkow.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
             ObservableList<User> selectedUsers = FXCollections.observableArrayList();
             selectedUsers.addAll(ListaCzlonkow.getSelectionModel().getSelectedItems());
-            if(selectedUsers != null) {
+            if(selectedUsers.size()!=0 && selectedUsers != null) {
                 MainController.addGroup(name, selectedUsers);
+                System.out.println(selectedUsers.size());
+            }
+            else{
+                pokazBlad("Nie wybrales zadnego uzytkownika do grupy");
+                return;
             }
 
             Stage stage = (Stage) ZatwierdzButtonG.getScene().getWindow();
             stage.close();
         } catch (Exception e) {
-            System.out.println("Wystąpił błąd: " + e.getMessage());
+            pokazBlad("Wystąpił błąd: " + e.getMessage());
         }
 
     }
@@ -69,15 +71,19 @@ public class AddGroupController {
     }
 
     @FXML
-    public void onWybierzCzlonkowComboBox(ActionEvent actionEvent) {
-    }
-
-    @FXML
     private void updateListView() {
 
         if (MainController != null) {
             ListaCzlonkow.getItems().clear();
-            ListaCzlonkow.getItems().addAll(MainController.getZnajomi()); // Dodanie użytkowników
+            ListaCzlonkow.getItems().addAll(MainController.getZnajomi());
         }
+    }
+
+    public void pokazBlad(String wiadomosc) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd");
+        alert.setHeaderText(null);
+        alert.setContentText(wiadomosc);
+        alert.showAndWait();
     }
 }

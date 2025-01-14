@@ -1,6 +1,7 @@
 package com.example.demo2;
 
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -39,10 +40,12 @@ public class AddUserController {
 
         }
         catch(NumberFormatException e){
-            System.out.println("Niepoprawne dane liczbowe. Spróbuj ponownie.");
+            pokazBlad("Niepoprawne dane liczbowe. Spróbuj ponownie.");
+            return;
         }
         catch(ClassCastException e){
-            System.out.println("Niepoprawny format danych. Spróbuj ponownie.");
+            pokazBlad("Niepoprawny format danych. Spróbuj ponownie.");
+            return;
         }
 
         MainController.addUser(name, surname, balance);
@@ -57,5 +60,13 @@ public class AddUserController {
         Stage stage = (Stage) OdrzucButton.getScene().getWindow();
         stage.close();
 
+    }
+
+    public void pokazBlad(String wiadomosc) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd");
+        alert.setHeaderText(null);
+        alert.setContentText(wiadomosc);
+        alert.showAndWait();
     }
 }

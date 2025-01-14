@@ -6,8 +6,6 @@ module com.example.demo2 {
 
     opens com.example.demo2 to javafx.fxml;
     exports com.example.demo2;
-    exports Not_in_use;
-    opens Not_in_use to javafx.fxml;
     opens Aplikacja to javafx.base;
     exports Aplikacja;
 

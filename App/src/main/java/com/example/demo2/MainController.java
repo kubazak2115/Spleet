@@ -14,6 +14,8 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class MainController {
    public Button addUser;
    public Button utworzGrupe;
    public ListView listaUzytkownikow;
-   public ComboBox wybierzUzytkownika;
+   public ComboBox wybierzUzytkownikaComboBox;
    public TextField twojeImie;
    public TextField twojeNazwisko;
    public TextField twojeSaldo;
@@ -75,20 +77,30 @@ public class MainController {
    private TableColumn<Expense, LocalDate> kolumnaKategoria2;
 
    @FXML
+   private ImageView obrazek;
+
+   @FXML
    private BarChart BarChart;
 
    @FXML
    private PieChart PieChart;
 
-   private ObservableList<Group> Groups = FXCollections.observableArrayList();
-   private ObservableList<User> Users = FXCollections.observableArrayList();
+   private ObservableList<Group> groups = FXCollections.observableArrayList();
+   private ObservableList<User> users = FXCollections.observableArrayList();
    private ObservableList<User> znajomi = FXCollections.observableArrayList();
    private ObservableList<Group> grupyUzytkownika = FXCollections.observableArrayList();
-   private User WybranyUzytkownik;
-   private Group WybranaGrupa;
+   private User wybranyUzytkownik;
+   private Group wybranaGrupa;
 
 
    public void initialize() throws IOException {
+
+      Image obrazekspleet = new Image(getClass().getResource("/images/spleet.png").toExternalForm());
+      if (obrazekspleet != null) {
+         obrazek.setImage(obrazekspleet);
+      }
+      obrazek.setFitWidth(121);
+      obrazek.setFitHeight(191);
 
 
       kolumnaNazwa.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -102,40 +114,39 @@ public class MainController {
       addUser("Harisson", "Ford", 2000);
       addUser("Rafał", "Brzoska", 13000);
       ObservableList<User> dogrupy = FXCollections.observableArrayList();
-      dogrupy.addAll(Users);
+      dogrupy.addAll(users);
       addGroup("Wyjazd w Góry", dogrupy);
       addUser("Seba", "Mila", 1500);
       addUser("rober", "lewy", 8000);
       ObservableList<User> dogrupy2 = FXCollections.observableArrayList();
-      dogrupy2.addAll(Users);
+      dogrupy2.addAll(users);
       addGroup("Kraków - wydatki", dogrupy2);
 
 
       LocalDate datka = LocalDate.now();
-      addExpenseForGroup(datka, Groups.get(1),34, "Kraków - jedzenie", "Jedzenie");
-      addExpenseForUser(datka, Groups.get(1),34, "Kraków - jedzenie", "Jedzenie");
+      addExpenseForGroup(datka, groups.get(1),34, "Kraków - jedzenie", "Jedzenie");
+      addExpenseForUser(datka, groups.get(1),34, "Kraków - jedzenie", "Jedzenie");
 
-      addExpenseForGroup(datka.minusDays(1), Groups.get(1),45, "bus", "Transport");
-      addExpenseForUser(datka.minusDays(1), Groups.get(1),45, "bus", "Transport");
+      addExpenseForGroup(datka.minusDays(1), groups.get(1),45, "bus", "Transport");
+      addExpenseForUser(datka.minusDays(1), groups.get(1),45, "bus", "Transport");
 
-      addExpenseForGroup(datka.minusDays(2), Groups.get(1),200, "casino", "Rozrywka");
-      addExpenseForUser(datka.minusDays(2), Groups.get(1),200, "casino", "Rozrywka");
+      addExpenseForGroup(datka.minusDays(2), groups.get(1),200, "casino", "Rozrywka");
+      addExpenseForUser(datka.minusDays(2), groups.get(1),200, "casino", "Rozrywka");
 
-      addExpenseForGroup(datka.minusDays(3), Groups.get(1),100, "opłata za parking", "Inne");
-      addExpenseForUser(datka.minusDays(3), Groups.get(1),100, "opłata za parking", "Inne");
+      addExpenseForGroup(datka.minusDays(3), groups.get(1),100, "opłata za parking", "Inne");
+      addExpenseForUser(datka.minusDays(3), groups.get(1),100, "opłata za parking", "Inne");
 
-      addExpenseForGroup(datka.minusDays(4), Groups.get(1),143, "Magulon", "Jedzenie");
-      addExpenseForUser(datka.minusDays(4), Groups.get(1),143, "Magulon", "Jedzenie");
+      addExpenseForGroup(datka.minusDays(4), groups.get(1),143, "Magulon", "Jedzenie");
+      addExpenseForUser(datka.minusDays(4), groups.get(1),143, "Magulon", "Jedzenie");
 
-      addExpenseForGroup(datka.minusDays(5), Groups.get(1),700, "Samolot z Warszawy", "Transport");
-      addExpenseForUser(datka.minusDays(5), Groups.get(1),700, "Samolot z Warszawy", "Transport");
+      addExpenseForGroup(datka.minusDays(5), groups.get(1),700, "Samolot z Warszawy", "Transport");
+      addExpenseForUser(datka.minusDays(5), groups.get(1),700, "Samolot z Warszawy", "Transport");
 
-      addExpenseForGroup(datka.minusDays(6), Groups.get(1),200, "Kraków - casino", "Rozrywka");
-      addExpenseForUser(datka.minusDays(6), Groups.get(1),200, "Kraków - casino", "Rozrywka");
+      addExpenseForGroup(datka.minusDays(6), groups.get(1),200, "Kraków - casino", "Rozrywka");
+      addExpenseForUser(datka.minusDays(6), groups.get(1),200, "Kraków - casino", "Rozrywka");
 
-      addExpenseForGroup(datka.minusDays(1), Groups.get(0),70, "Pociąg do Zakopanego", "Jedzenie");
-      addExpenseForUser(datka.minusDays(1), Groups.get(0),70, "Pociąg do Zakopanego", "Jedzenie");
-
+      addExpenseForGroup(datka.minusDays(1), groups.get(0),70, "Pociąg do Zakopanego", "Jedzenie");
+      addExpenseForUser(datka.minusDays(1), groups.get(0),70, "Pociąg do Zakopanego", "Jedzenie");
 
       kolumnaNazwa2.setCellValueFactory(new PropertyValueFactory<>("description"));
       kolumnaWartosc2.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -145,28 +156,26 @@ public class MainController {
       kolumnaKategoria2.setCellValueFactory(new PropertyValueFactory<>("category"));
 
 
+      if(wybranyUzytkownik != null) {
+         wybierzGrupeComboBox.setItems(grupyUzytkownika);
+         wybierzUzytkownikaComboBox.setItems(users);
+         listaUzytkownikow.setItems(users);
+      }
 
       refresh();
 
-
-      listaUzytkownikow.setItems(Users);
-
-      wybierzUzytkownika.setItems(Users); // Powiązanie ComboBox z listą użytkowników
-
-
-
       // Obsługa zmiany wybranego użytkownika
-      wybierzUzytkownika.getSelectionModel().selectedItemProperty().addListener((obs, oldUser, newUser) -> {
-         WybranyUzytkownik = (User) newUser;
+      wybierzUzytkownikaComboBox.getSelectionModel().selectedItemProperty().addListener((obs, oldUser, newUser) -> {
+         wybranyUzytkownik = (User) newUser;
          if (newUser != null) {
             aktualizujListeZnajomych((User) newUser);
             aktualizujListeGrup((User) newUser);
             wybierzGrupeComboBox.setItems(grupyUzytkownika);
-            aktualizujWydatkiGrupy(WybranaGrupa);
+            aktualizujWydatkiGrupy(wybranaGrupa);
             aktualizujWykres();
             aktualizujWykresPieChart();
-            if (!WybranyUzytkownik.getGroups().contains(WybranaGrupa)) {
-               WybranaGrupa = null;
+            if (!wybranyUzytkownik.getGroups().contains(wybranaGrupa)) {
+               wybranaGrupa = null;
             }
          }
          refresh();
@@ -175,12 +184,11 @@ public class MainController {
 
 
       wybierzGrupeComboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-         if (newValue != null) { // Upewnij się, że wybrano coś (newValue != null)
-            WybranaGrupa = (Group) newValue;;
-            if (WybranaGrupa != null) {
-               aktualizujWydatkiGrupy(WybranaGrupa);
+         if (newValue != null) {
+            wybranaGrupa = (Group) newValue;;
+            if (wybranaGrupa != null) {
+               aktualizujWydatkiGrupy(wybranaGrupa);
             } else {
-               System.out.println("Brak wybranej grupy.");
 
                aktualizujWydatkiGrupy(null);
             }
@@ -188,26 +196,27 @@ public class MainController {
          }
       });
 
+
    }
 
    public void aktualizujWykres() {
-      if(WybranyUzytkownik != null) {
+      if(wybranyUzytkownik != null) {
       BarChart.getData().clear();
 
       LocalDate datka = LocalDate.now();
-         XYChart.Series<String, Number> series = new XYChart.Series<>();
-         series.setName(String.valueOf(WybranyUzytkownik));
+      XYChart.Series<String, Number> series = new XYChart.Series<>();
+      series.setName(String.valueOf(wybranyUzytkownik));
 
-         for (int i = 6; i >=0; i--) {
-            double expenseSum = 0;
-            for (Expense expense : WybranyUzytkownik.getExpenses()) {
-               if (expense.getDatum().equals(datka.minusDays(i))) {
-                  expenseSum += expense.getPrice() / expense.getExpenseGroup().getSize();
-               }
+      for (int i = 6; i >=0; i--) {
+         double expenseSum = 0;
+         for (Expense expense : wybranyUzytkownik.getExpenses()) {
+            if (expense.getDatum().equals(datka.minusDays(i))) {
+               expenseSum += expense.getPrice() / expense.getExpenseGroup().getSize();
             }
-            series.getData().add(new XYChart.Data<>(datka.minusDays(i).toString(), expenseSum));
          }
-         BarChart.getData().add(series);
+         series.getData().add(new XYChart.Data<>(datka.minusDays(i).toString(), expenseSum));
+      }
+      BarChart.getData().add(series);
       }
    }
 
@@ -216,15 +225,12 @@ public class MainController {
 
       Map<String, Double> wydatkiNaKategorie = new HashMap<>();
 
-
-      for (Expense expense : WybranyUzytkownik.getExpenses()) {
+      for (Expense expense : wybranyUzytkownik.getExpenses()) {
          String kategoria = expense.getCategory().toString();
          double cena = expense.getPrice() / expense.getExpenseGroup().getSize();
 
-
          wydatkiNaKategorie.put(kategoria, wydatkiNaKategorie.getOrDefault(kategoria, 0.0) + cena);
       }
-
 
       for (Map.Entry<String, Double> entry : wydatkiNaKategorie.entrySet()) {
          PieChart.Data data = new PieChart.Data(entry.getKey(), entry.getValue());
@@ -232,23 +238,17 @@ public class MainController {
       }
    }
 
-
-
-
-
-
-
-
    private void aktualizujListeZnajomych(User wybranyUser) {
       ObservableList<User> nowiuserzy = FXCollections.observableArrayList();
 
-      for (User user : Users) {
+      for (User user : users) {
          if (!user.equals(wybranyUser)) {
             nowiuserzy.add(user);
          }
       }
       znajomi = nowiuserzy;
       listaUzytkownikow.setItems(znajomi);
+
 
    }
 
@@ -260,7 +260,7 @@ public class MainController {
 
    private void aktualizujListeGrup(User wybranyUser) {
       ObservableList<Group> Nowagrupa = FXCollections.observableArrayList();
-      for (Group grupa : Groups) {
+      for (Group grupa : groups) {
          if(grupa.getMembers().contains(wybranyUser)) {
             Nowagrupa.add(grupa);
          }
@@ -270,11 +270,10 @@ public class MainController {
    }
 
    private void aktualizujListewWydatkow() {
-      if(WybranyUzytkownik != null) {
-         tabelaUzytkownika.setItems(WybranyUzytkownik.getExpenses());
+      if(wybranyUzytkownik != null) {
+         tabelaUzytkownika.setItems(wybranyUzytkownik.getExpenses());
       }
    }
-
 
    public void onAddUser(ActionEvent actionEvent) throws IOException {
       FXMLLoader loader = new FXMLLoader(getClass().getResource("AddUserStage.fxml"));
@@ -289,7 +288,9 @@ public class MainController {
    }
 
    public void onUtworzGrupe(ActionEvent actionEvent) throws IOException {
-      if(Users.size()>1) {
+
+      if(users.size()>1) {
+
          FXMLLoader loader = new FXMLLoader(getClass().getResource("AddGroupStage.fxml"));
          Stage stage = new Stage();
          stage.setScene(new Scene(loader.load()));
@@ -306,58 +307,59 @@ public class MainController {
    }
 
    public void onDodajWydatek(ActionEvent actionEvent) throws IOException {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("AddExpenseStage.fxml"));
-      Stage stage = new Stage();
-      stage.setScene(new Scene(loader.load()));
-      stage.setTitle("Dodaj nowy wydatek");
 
-      AddExpenseController ExpenseController = loader.getController();
-      ExpenseController.initialize(WybranyUzytkownik, grupyUzytkownika);
-      ExpenseController.setMainController(this);
+      if (grupyUzytkownika.size() > 0) {
 
-      stage.show();
-      refresh();
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddExpenseStage.fxml"));
+         Stage stage = new Stage();
+         stage.setScene(new Scene(loader.load()));
+         stage.setTitle("Dodaj nowy wydatek");
+
+         AddExpenseController ExpenseController = loader.getController();
+         ExpenseController.initialize(wybranyUzytkownik, grupyUzytkownika);
+         ExpenseController.setMainController(this);
+
+         stage.show();
+         refresh();
+      }
+      else{
+         pokazBlad("To aplikacja do dzielenia się wydatkami, najpierw musisz być w grupie, żeby dodać wydatek");
+      }
    }
 
 
    public void addGroup(String name, ObservableList <User>  chosenUsers) throws IOException {
       Group newgroup = new Group(name);
-      Groups.add(newgroup);
-      newgroup.addMember(WybranyUzytkownik);
+      groups.add(newgroup);
+      newgroup.addMember(wybranyUzytkownik);
       for(User user : chosenUsers) {
          newgroup.addMember(user);
       }
-      aktualizujListeGrup(WybranyUzytkownik);
+      aktualizujListeGrup(wybranyUzytkownik);
    }
 
    public void addUser( String name, String surname, double balance) throws IOException {
-      User newuser = new User(/*id,*/ name, surname, balance);
-      Users.add(newuser);
-      WybranyUzytkownik = newuser;
+      User newuser = new User(name, surname, balance);
+      users.add(newuser);
+      wybranyUzytkownik = newuser;
 
-      wybierzUzytkownika.getSelectionModel().select(WybranyUzytkownik);
+      wybierzUzytkownikaComboBox.getSelectionModel().select(wybranyUzytkownik);
    }
 
    public void addExpenseForUser(LocalDate datum, Group group, double price, String description, String category){
-      Expense newexpenseforuser = new Expense(group, datum, price, description,  WybranyUzytkownik, category);
+      Expense newexpenseforuser = new Expense(group, datum, price, description, wybranyUzytkownik, category);
       for(User user : group.getMembers()) {
          user.addExpense(newexpenseforuser);
          user.addSpending(newexpenseforuser.getPrice()/(double)group.getSize());
-         user.addAllSpending(newexpenseforuser.getPrice());
       }
       aktualizujWykresPieChart();
       aktualizujWykres();
       aktualizujListewWydatkow();
       refresh();
 
-
-
-
-
-
    }
    public void addExpenseForGroup(LocalDate datum, Group group, double price, String description, String category){
-      Expense newexpenseforgroup = new Expense( WybranyUzytkownik ,group, datum, price, description, category);
+      Expense newexpenseforgroup = new Expense(wybranyUzytkownik,group, datum, price, description, category);
       group.addExpense(newexpenseforgroup);
       aktualizujWydatkiGrupy(group);
 
@@ -365,42 +367,34 @@ public class MainController {
 
    public void onUsunUzytkownika() {
 
-      if (WybranyUzytkownik != null && Users.size()!=1) {
-         ObservableList <Group> dousuniecia = FXCollections.observableArrayList(WybranyUzytkownik.getGroups());
+      if (wybranyUzytkownik != null && users.size()!=1) {
+         ObservableList <Group> dousuniecia = FXCollections.observableArrayList(wybranyUzytkownik.getGroups());
          for (Group group : dousuniecia) {
-            group.removeMember(WybranyUzytkownik);
+            group.removeMember(wybranyUzytkownik);
          }
-         Users.remove(WybranyUzytkownik);
+         users.remove(wybranyUzytkownik);
       }
-   }
-
-   public ObservableList<User> getUsers() {
-      return Users;
    }
 
    public ObservableList<User> getZnajomi() {
       return znajomi;
    }
 
-
    public void refresh(){
-      if(WybranyUzytkownik != null) {
-         twojeImie.setText(WybranyUzytkownik.getName());
-         twojeNazwisko.setText(WybranyUzytkownik.getSurname());
-         twojeSaldo.setText(String.valueOf(WybranyUzytkownik.getBalance() + WybranyUzytkownik.getSpending()));
-         aktualizujListeGrup(WybranyUzytkownik);
-         aktualizujListeZnajomych(WybranyUzytkownik);
-         WybranyUzytkownik = (User) wybierzUzytkownika.getValue();
-         yourBanalceTextField.setText(String.valueOf(WybranyUzytkownik.getSpending()));
+      if(wybranyUzytkownik != null) {
+         twojeImie.setText(wybranyUzytkownik.getName());
+         twojeNazwisko.setText(wybranyUzytkownik.getSurname());
+         twojeSaldo.setText(String.valueOf(wybranyUzytkownik.getBalance() + wybranyUzytkownik.getSpending()));
+         aktualizujListeGrup(wybranyUzytkownik);
+         aktualizujListeZnajomych(wybranyUzytkownik);
+         wybranyUzytkownik = (User) wybierzUzytkownikaComboBox.getValue();
+         yourBanalceTextField.setText(String.valueOf(wybranyUzytkownik.getSpending()));
          aktualizujListewWydatkow();
       }
-      else{
-
-      }
-      if(WybranaGrupa!=null) {
-         System.out.println(WybranaGrupa.getName());
-         groupBalanceTextField.setText(String.valueOf(WybranaGrupa.getBalance(WybranyUzytkownik)));
-         groupBalanceTextField.setText(String.valueOf(WybranaGrupa.getSpendings()/(double)WybranaGrupa.getSize()));
+      if(wybranaGrupa !=null) {
+         System.out.println(wybranaGrupa.getName());
+         groupBalanceTextField.setText(String.valueOf(wybranaGrupa.getBalance(wybranyUzytkownik)));
+         groupBalanceTextField.setText(String.valueOf(wybranaGrupa.getSpendings()/(double) wybranaGrupa.getSize()));
       }
       else{
          tabelaGrupy.setItems(null);
@@ -415,10 +409,5 @@ public class MainController {
       alert.setContentText(wiadomosc);
       alert.showAndWait();
    }
-
-
-
-
-
 
 }

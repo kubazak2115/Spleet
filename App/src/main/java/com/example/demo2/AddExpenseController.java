@@ -40,8 +40,6 @@ public class AddExpenseController {
 
         GrupaWydatku.setItems(grupyuzytkownika);
         KategoriaWydatku.setItems(kategorieOpcje);
-
-
         PodziaWydatku.setItems(wydatkiOpcje);
 
     }
@@ -50,9 +48,9 @@ public class AddExpenseController {
 
     public void onDodajWydatek(ActionEvent actionEvent) {
         LocalDate datum = LocalDate.now();
-        double price = 666;
-        String description = "666";
-        String category = "jedzenie";
+        double price = 0.0;
+        String description = "";
+        String category = "";
 
         try{
             datum = DataWydatku.getValue();
@@ -62,9 +60,15 @@ public class AddExpenseController {
         }
         catch(NumberFormatException e){
             pokazBlad("Niepoprawne dane liczbowe. Spróbuj ponownie.");
+            return;
+        }
+        catch (NullPointerException e) {
+            pokazBlad("Nie wybrales ktoregos z rozwijanych pól");
+            return;
         }
 
         Group wybranagrupa = (Group) GrupaWydatku.getValue();
+
         mainController.addExpenseForGroup(datum, wybranagrupa, price, description, category);
         mainController.addExpenseForUser(datum, wybranagrupa, price, description, category);
 

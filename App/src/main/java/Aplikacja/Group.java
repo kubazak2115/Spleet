@@ -13,11 +13,9 @@ public class Group {
     private Map<User, Double> userBalances = new HashMap<>();
     private double spendings =0;
 
-
     public Group(String name) {
         this.name = name;
         this.numberofmembers = members.size();
-
 
     }
 
@@ -25,7 +23,6 @@ public class Group {
         expenses.add(expense);
         this.spendings-=expense.getPrice();
     }
-
 
     public ObservableList<Expense> getExpenses() {
         return expenses;
@@ -35,13 +32,12 @@ public class Group {
         return spendings;
     }
 
-
     public void addMember(User user) {
         if (!members.contains(user)) {
             members.add(user);
             user.addGroup(this);
             this.numberofmembers = members.size();
-            userBalances.put(user, 0.0); // Initialize balance for the new member
+            userBalances.put(user, 0.0);
 
         }
     }
@@ -51,7 +47,7 @@ public class Group {
             members.remove(user);
             user.removeGroup(this);
             this.numberofmembers = members.size();
-            userBalances.remove(user); // Remove the balance for this member
+            userBalances.remove(user);
 
         }
     }
